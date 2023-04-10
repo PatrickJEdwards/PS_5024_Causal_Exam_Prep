@@ -8,6 +8,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 # Problem Set 1.
 
 ## 1.1. Unbiased Estimator.
@@ -110,6 +111,7 @@ $$
 Y_{\left(D_1, D_2, \ldots, D_N\right) i}=Y_{\left(D_1^{\prime}, D_2^{\prime}, \ldots, D_N^{\prime}\right) i} \quad \text { if } \quad D_i=D_i^{\prime}
 $$
 
+---
 
 \newpage
 
@@ -138,12 +140,12 @@ $$
   \text{RSS} &= (\mathbf{y}-\mathbf{X} \hat{\beta})^{\top}(\mathbf{y}-\mathbf{X} \hat{\beta}) && (\text{By definition of RSS}) \\
   &= \left(\mathbf{y}^{\top}-\hat{\beta}^{\top} \mathbf{X}^{\top}\right) (\mathbf{y}-\mathbf{X} \hat{\beta}) && \text{(Distribute transpose)} \\
   &= \mathbf{y}^{\top} \mathbf{y}-\mathbf{y}^{\top} \mathbf{X} \hat{\beta}-\hat{\beta}^{\top} \mathbf{X}^{\top} \mathbf{y}+\hat{\beta}^{\top} \mathbf{X}^{\top} \mathbf{x} \hat{\beta} && \text{(Multiply out RHS)} \\
-  &= \mathbf{y}^{\top} \mathbf{y}-2 \mathbf{y}^{\top} \mathbf{X} \hat{\beta}+\hat{\beta}^{\top} \mathbf{X}^{\top} \mathbf{x} \hat{\beta} && \text{(Combine like terms)} \\
-  \frac{\partial \text{RSS}}{\partial \hat{\beta}} &= \frac{\partial }{\partial \hat{\beta}} \left[\mathbf{y}^{\top} \mathbf{y}-2 \mathbf{y}^{\top} \mathbf{X} \hat{\beta}+\hat{\beta}^{\top} \mathbf{X}^{\top} \mathbf{X} \hat{\beta} \right]  && \text{(Take derivative w.r.t $\hat{\beta}$)} \\
+  &= \mathbf{y}^{\top} \mathbf{y}-2 \mathbf{y}^{\top} \mathbf{X} \hat{\beta}+\hat{\beta}^{\top} \mathbf{X}^{\top} \mathbf{x} \hat{\beta} && (\text{Combine like terms}) \\
+  \frac{\partial \text{RSS}}{\partial \hat{\beta}} &= \frac{\partial }{\partial \hat{\beta}} \left[\mathbf{y}^{\top} \mathbf{y}-2 \mathbf{y}^{\top} \mathbf{X} \hat{\beta}+\hat{\beta}^{\top} \mathbf{X}^{\top} \mathbf{X} \hat{\beta} \right]  && (\text{Take derivative w.r.t $\hat{\beta}$}) \\
   &= \mathbf{X}^{\top} \mathbf{y}-\left(\mathbf{X}^{\top} \mathbf{X}\right) \hat{\beta} && (\text{Perform derivative}) \\
-  0 & =\mathbf{X}^{\top} \mathbf{y}-\left(\mathbf{X}^{\top} \mathbf{X}\right) \hat{\beta} && \text{(Set equal to zero)} \\
-  \left(\mathbf{X}^{\top} \mathbf{X}\right) \hat{\beta} & =\mathbf{X}^{\top} \mathbf{y} && \text{(Isolate $\hat{\beta}$)} \\
-  \hat{\beta} & =\left(\mathbf{x}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{y} && \text{(Multiply by inverse)} \\
+  0 & =\mathbf{X}^{\top} \mathbf{y}-\left(\mathbf{X}^{\top} \mathbf{X}\right) \hat{\beta} && (\text{Set equal to zero}) \\
+  \left(\mathbf{X}^{\top} \mathbf{X}\right) \hat{\beta} & =\mathbf{X}^{\top} \mathbf{y} && (\text{Isolate $\hat{\beta}$}) \\
+  \hat{\beta} & =\left(\mathbf{x}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{y} && (\text{Multiply by inverse}) \\
  & && \text{(As desired)}
 \end{aligned}
 $$
@@ -151,14 +153,40 @@ $$
 - The following condition is required for the above solution (i.e., the $\hat{\beta}$ that minimizes RSS) to be well-defined:
   - **No Perfect Collinearity**: none of the covariates are linearly dependent on other covariates (or combinations of other covariates). Linear dependence would make would make $\left(\mathbf{x}^{\top} \mathbf{X}\right)^{-1}$ impossible to calculate.
 
+---
 
 ### 2.2.b. Show that the conditional expectation function $\mathbb{E}[\mathbf{y} \mid \mathbf{X}]$ is equivalent to $\mathbf{X} \beta$ for a linear regression model $\mathbf{y}=\mathbf{X} \beta+\mathbf{u}$ under the zero conditional mean assumption. (Make sure to state what that assumption is using appropriate notation.) In precise language, explain what the conditional expectation function is.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- **Zero Conditional Mean Assumption** (ZCMA): we assume that, on average, the error term will have a mean of zero, even when conditioned on all covariate values.
+  - Formal expression:
+
+$$
+\mathbb{E}(u | \mathbf{X}) = \mathbb{E}(u) = 0
+$$
+
+- Show that $\mathbb{E}[\mathbf{y} \mid \mathbf{X}] = \mathbf{X} \beta$ under the zero conditional mean assumption (ZCMA):
+
+$$
+\begin{aligned}
+\mathbb{E}[y \mid \mathbf{X}] &= \mathbb{E}(\mathbf{X} \beta+u \mid \mathbf{X})  && \text{(By given linear regression equation)} \\
+  &= \mathbb{E}(\mathbf{X} \beta \mid \mathbf{X})+\mathbb{E}(u \mid \mathbf{X}) && (\text{Distribute expectation}) \\
+  &= \mathbf{X} \beta + \mathbb{E}(u \mid \mathbf{X}) && (\text{By rules of expectation and conditional expectation}) \\
+  &= \mathbf{X} \beta + 0  && (\text{By zero conditional mean assumption, $u\perp \!\!\! \perp \mathbf{X}$}) \\
+  &= \mathbf{X} \beta && \text{(As desired)}
+\end{aligned}
+$$
+
+- I now explain what the conditional mean function is (in plain language):
+  - By design, the error term $u$ is $0$ in expectation. 
+  - We further assume heteroskedasticity--that the error term is uncorrelated with the matrix $\mathbf{X}$. 
+  - Then, conditioning on $\mathbf{X}$ changes nothing about the expectation of $u$ (adds no information since they are uncorrelated) and it remains 0.
 
 
+---
 
-### 2.2.c. Consider the following data and corresponding graph which plots the population regression function of $Y$ on $X$ (represented as A in the graph), which we assume to be linear such that $\mathbb{E}[Y \mid X]=\beta_0+\beta_1 X$. First, express the quantities corresponding to $B$, $C$ and $D$ in terms of the conditional expectations of $X$ and $Y$. Second, express $B, C$ and $D$ in the graph in terms of $\beta_0$ and $\beta_1$. Finally, use the provided data to estimate $B, C, D, \beta_0$ and $\beta_1$.
+\newpage
+
+### 2.2.c. Consider the following data and corresponding graph (figure 1---2.2.c graph) which plots the population regression function of $Y$ on $X$ (represented as A in the graph), which we assume to be linear such that $\mathbb{E}[Y \mid X]=\beta_0+\beta_1 X$. First, express the quantities corresponding to $B$, $C$ and $D$ in terms of the conditional expectations of $X$ and $Y$. Second, express $B, C$ and $D$ in the graph in terms of $\beta_0$ and $\beta_1$. Finally, use the provided data to estimate $B, C, D, \beta_0$ and $\beta_1$.
 
 $$
 \begin{array}{cc}
@@ -170,10 +198,27 @@ $$
 \end{array}
 $$
 
-![2.2.c. Graph]("probset2_image.png")
+![2.2.c. Graph](probset2_image.png)
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- First, express the quantities corresponding to $B$, $C$ and $D$ in terms of the conditional expectations of $X$ and $Y$. 
+  - $B = \mathbb{E}[Y | X = 1]$.
+  - $C = \mathbb{E}[Y | X = 0]$.
+  - $D = \mathbb{E}[Y | X = 1] - \mathbb{E}[Y | X = 0]$.
+- Second, express $B, C$ and $D$ in the graph in terms of $\beta_0$ and $\beta_1$. 
+  - $B = \beta_0 + \beta_1$.
+  - $C = \beta_0$. 
+  - $D = B - C = \beta_1$.
+- Finally, use the provided data to estimate $B, C, D, \beta_0$ and $\beta_1$.
+  - $B = \mathbb{E}[Y | X = 1] = \frac{5 + 7}{2} = 6$.
+  - $C = \mathbb{E}[Y | X = 0] = \frac{1 + 3}{2} = 2$.
+  - $D = \mathbb{E}[Y | X = 1] - \mathbb{E}[Y | X = 0] = 6 - 2 = 4$.
+  - $\beta_0 = C = 2$.
+  - $\beta_1 = D = 4$.
 
+---
+
+
+\newpage
 
 ### 2.2.d. Now we will derive the variance covariance matrix for $\hat{\beta}$. Assume that $\mathbb{E}\left[\mathbf{u} \mathbf{u}^{\prime} \mid \mathbf{X}\right]=\sigma^2 \mathbf{I}$, where $\mathbf{I}$ denotes the $n \times$ $n$ identity matrix. Given your result for $\hat{\beta}$ from (a) and given that we can write $\hat{\beta}$ as $\hat{\beta}=\beta+\left(\mathbf{X}^{\prime} \mathbf{X}\right)^{-1} \mathbf{X}^{\prime} \mathbf{u}$, derive the variance of the OLS estimator $\hat{\beta}$ using matrix notation. (Hint: Remember that the variance of a random variable is defined as the expected value of the squared deviation from the mean.)
 
@@ -201,9 +246,14 @@ $$
 [**\textcolor{red}{NOT ANSWERED}**]
 
 
-### 2.3.b. A Ghanaian political insider gets wind of your study, and gives you some information. She says that because all of the polling stations in your study are within one small constituency, there will be interference between units. She explains how "interference" might occur in this case: In Ghana, the political operatives in each polling station who are responsible for committing fraud will move elsewhere if their efforts are frustrated. Their range of movement is predetermined by the geographic influence of the party bosses. Local conditions are such that the operatives in each polling station can only move to one, and only one, other polling station, as shown in Figure 1.
+### 2.3.b. A Ghanaian political insider gets wind of your study, and gives you some information. She says that because all of the polling stations in your study are within one small constituency, there will be interference between units. She explains how "interference" might occur in this case: In Ghana, the political operatives in each polling station who are responsible for committing fraud will move elsewhere if their efforts are frustrated. Their range of movement is predetermined by the geographic influence of the party bosses. Local conditions are such that the operatives in each polling station can only move to one, and only one, other polling station, as shown in Figure 2 (2.3.b graph).
 
-![2.3.b. Graph: Operatives may move to only one other polling station, as indicated by the arrows (for example, from the second to third polling station, but not the reverse).]("probset2_image_2.png")
+
+
+![2.3.b. Graph: Operatives may move to only one other polling station, as indicated by the arrows (for example, from the second to third polling station, but not the reverse).](probset2_image_2.png)
+
+
+
 
 **Given this structure, again answer questions (i) - (iii).**
 
