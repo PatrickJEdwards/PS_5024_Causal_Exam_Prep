@@ -17,18 +17,8 @@ knitr::opts_chunk$set(echo = TRUE)
 **The population mean is $\mu_y=\frac{1}{N} \sum_{i=1}^N y_i$. Consider the estimator $\tilde{y}_i=\frac{1}{n} \sum_{i=1}^N z_i y_i$. Intuitively, what does $\tilde{y}_i$ represent? Show that it is an unbiased estimator of $\mu_y$. Would this still be true if we did not have a simple random sample (e.g., if we were more likely to sample higher values of $y_i$ than lower values)?**
 
 - $\tilde{y}_i$ represents the sample mean, an estimate of the population mean.
-- Note that  $z_{i}$ is a random variable with two possible outcomes: $z_i \in \{0,1 \}$. This represents a Bernoulli probability distribution, which has an expected value of $p$, the probability of success $\Pr(z_{i}=1)$. In this case, we know that $z_{i}=1$ exactly $n$ times where $n$ is the number of units in the population $y_{i}$ that were randomly sampled. Furthermore, $z_{i}=0$ exactly $N-n$ times. Then the probability that $z_{i}=1$ is: 
-
-$$
-\Pr\left(z_{i}=1\right) = \frac{n}{N}
-$$
-
-- Thus, the Bernoulli distribution has the following expected value: 
-
-$$
-\mathbb{E}\left[z_{i}\right]=\frac{n}{N}
-$$
-
+- Note that  $z_{i}$ is a random variable with two possible outcomes: $z_i \in \{0,1 \}$. This represents a Bernoulli probability distribution, which has an expected value of $p$, the probability of success $\Pr(z_{i}=1)$. In this case, we know that $z_{i}=1$ exactly $n$ times where $n$ is the number of units in the population $y_{i}$ that were randomly sampled. Furthermore, $z_{i}=0$ exactly $N-n$ times. Then the probability that $z_{i}=1$ is: $\Pr\left(z_{i}=1\right) = \frac{n}{N}$
+  - Thus, the Bernoulli distribution has the following expected value: $\mathbb{E}\left[z_{i}\right]=\frac{n}{N}$
 - An estimator is unbiased if $\mathbb{E}(\tilde{y}_i - \mu_y) = 0 \Rightarrow \mathbb{E}(\tilde{y}_i) = \mu_y$. Let's prove this:
 
 \begin{align*}
@@ -96,14 +86,14 @@ $$
 $$
 
 - Let's address each of these in turn:
-  - $\mathbb{E}\left[Y_i(0) \mid D_i=1\right]$ is \textbf{not observable} because it's not an actualizable quantity.
-    - Note that this quantity is the potential outcome for $Y_i$ when unit $i$ doesn't receive treatment, conditional on unit $i$ receiving treatment. 
-  - $\mathbb{E}\left[Y_i(0)\right]$ is generally \textbf{not observable} in experimental settings because it requires that all units receive no treatment (i.e., the control condition), which would be a terrible experiment! 
-    - Note that this quantity is the expected value of the potential outcome for $Y_i$ when unit $i$ does not receive treatment.
-  - $\mathbb{E}\left[Y_i \mid D_i=0\right]$ is \textbf{not observable} because it requires us to know both potential outcomes ($Y_i(0)$ and $Y_i(1)$) conditional on unit $i$ not receiving treatment, but we cannot observe $Y_i(1)$ when unit $i$ doesn't receive treatment.
-    - Note that this quantity is the expected value of \textit{both} potential outcome for $Y_i$ when unit $i$ does not receive treatment, conditional on unit $i$ receives treatment.
-  - $\mathbb{E}\left[Y_i(0) \mid D_i=0\right]$: is the only \textbf{observable} quantity. It's the only one where the potential outcome (i.e., $Y_i(0)$) and treatment status (i.e., $D_i = 0$) line up.
-    - Note that this quantity is the expected value of the potential outcome for $Y_i$ when unit $i$ does not receive treatment, conditional on unit $i$ not receiving treatment.
+- $\mathbb{E}\left[Y_i(0) \mid D_i=1\right]$ is \textbf{not observable} because it's not an actualizable quantity.
+  - Note that this quantity is the potential outcome for $Y_i$ when unit $i$ doesn't receive treatment, conditional on unit $i$ receiving treatment. 
+- $\mathbb{E}\left[Y_i(0)\right]$ is generally \textbf{not observable} in experimental settings because it requires that all units receive no treatment (i.e., the control condition), which would be a terrible experiment! 
+  - Note that this quantity is the expected value of the potential outcome for $Y_i$ when unit $i$ does not receive treatment.
+- $\mathbb{E}\left[Y_i \mid D_i=0\right]$ is \textbf{not observable} because it requires us to know both potential outcomes ($Y_i(0)$ and $Y_i(1)$) conditional on unit $i$ not receiving treatment, but we cannot observe $Y_i(1)$ when unit $i$ doesn't receive treatment.
+  - Note that this quantity is the expected value of \textit{both} potential outcome for $Y_i$ when unit $i$ does not receive treatment, conditional on unit $i$ receives treatment.
+- $\mathbb{E}\left[Y_i(0) \mid D_i=0\right]$: is the only \textbf{observable} quantity. It's the only one where the potential outcome (i.e., $Y_i(0)$) and treatment status (i.e., $D_i = 0$) line up.
+  - Note that this quantity is the expected value of the potential outcome for $Y_i$ when unit $i$ does not receive treatment, conditional on unit $i$ not receiving treatment.
 
 ---
 
@@ -121,14 +111,13 @@ Y_{\left(D_1, D_2, \ldots, D_N\right) i}=Y_{\left(D_1^{\prime}, D_2^{\prime}, \l
 $$
 
 
-
 \newpage
 
 # Problem Set 2.
 
 ## 2.2. OLS Estimator.
 
-### 2.2.a. We can describe an observed outcome variable $\mathbf{y}$ as a function of the explanatory variables $\mathbf{X}$ in the following form: $\mathbf{y}=\mathbf{X} \hat{\beta}+\hat{\mathbf{u}}$, where $\mathbf{y}$ is a column vector of length $n$, $\mathbf{X}$ is an $n \times k$ matrix, $\hat{\beta}$ is a column vector of length $k$, and $\hat{\mathbf{u}}$ is a column vector of length $n$. Given this setup, consider the following quantity (where 'indicates transpose):
+### 2.2.a. We can describe an observed outcome variable $\mathbf{y}$ as a function of the explanatory variables $\mathbf{X}$ in the following form: $\mathbf{y}=\mathbf{X} \hat{\beta}+\hat{\mathbf{u}}$, where $\mathbf{y}$ is a column vector of length $n$, $\mathbf{X}$ is an $n \times k$ matrix, $\hat{\beta}$ is a column vector of length $k$, and $\hat{\mathbf{u}}$ is a column vector of length $n$. Given this setup, consider the following quantity (where ' indicates transpose):
 
 $$
 (\mathbf{y}-\mathbf{X} \hat{\beta})^{\prime}(\mathbf{y}-\mathbf{X} \hat{\beta})
@@ -136,8 +125,31 @@ $$
 
 **What does this quantity represent in the terminology of linear regression theory? Using matrix notation, solve for $\hat{\beta}$ such that this quantity is minimized. What conditions are required such that your solution for $\hat{\beta}$ is well-defined?**
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- This quantity represents the **sum of squared residuals**---or **Residual Sum of Squares (RSS)**---in linear regression theory. 
+  - Specifically, it's how much of the variance in the outcome variable is unexplained by the linear regression model. 
+  - Generally, it's a measure of the discrepancy between the (observed) values of the outcome variable and the (predicted) values of the linear regression model.
+- Let's solve for $\hat{\beta}$ such that this quantity is minimized in the proof below. We can do this in three easy steps:
+  - First, simplify the residual sum of squares expression.
+  - Second, take the first derivative of with respect to $\hat{\beta}$.
+  - Third, set this first derivative equal to zero and solve for $\hat{\beta}$.
 
+$$
+\begin{aligned}
+  \text{RSS} &= (\mathbf{y}-\mathbf{X} \hat{\beta})^{\top}(\mathbf{y}-\mathbf{X} \hat{\beta}) && (\text{By definition of RSS}) \\
+  &= \left(\mathbf{y}^{\top}-\hat{\beta}^{\top} \mathbf{X}^{\top}\right) (\mathbf{y}-\mathbf{X} \hat{\beta}) && \text{(Distribute transpose)} \\
+  &= \mathbf{y}^{\top} \mathbf{y}-\mathbf{y}^{\top} \mathbf{X} \hat{\beta}-\hat{\beta}^{\top} \mathbf{X}^{\top} \mathbf{y}+\hat{\beta}^{\top} \mathbf{X}^{\top} \mathbf{x} \hat{\beta} && \text{(Multiply out RHS)} \\
+  &= \mathbf{y}^{\top} \mathbf{y}-2 \mathbf{y}^{\top} \mathbf{X} \hat{\beta}+\hat{\beta}^{\top} \mathbf{X}^{\top} \mathbf{x} \hat{\beta} && \text{(Combine like terms)} \\
+  \frac{\partial \text{RSS}}{\partial \hat{\beta}} &= \frac{\partial }{\partial \hat{\beta}} \left[\mathbf{y}^{\top} \mathbf{y}-2 \mathbf{y}^{\top} \mathbf{X} \hat{\beta}+\hat{\beta}^{\top} \mathbf{X}^{\top} \mathbf{X} \hat{\beta} \right]  && \text{(Take derivative w.r.t $\hat{\beta}$)} \\
+  &= \mathbf{X}^{\top} \mathbf{y}-\left(\mathbf{X}^{\top} \mathbf{X}\right) \hat{\beta} && (\text{Perform derivative}) \\
+  0 & =\mathbf{X}^{\top} \mathbf{y}-\left(\mathbf{X}^{\top} \mathbf{X}\right) \hat{\beta} && \text{(Set equal to zero)} \\
+  \left(\mathbf{X}^{\top} \mathbf{X}\right) \hat{\beta} & =\mathbf{X}^{\top} \mathbf{y} && \text{(Isolate $\hat{\beta}$)} \\
+  \hat{\beta} & =\left(\mathbf{x}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{y} && \text{(Multiply by inverse)} \\
+ & && \text{(As desired)}
+\end{aligned}
+$$
+
+- The following condition is required for the above solution (i.e., the $\hat{\beta}$ that minimizes RSS) to be well-defined:
+  - **No Perfect Collinearity**: none of the covariates are linearly dependent on other covariates (or combinations of other covariates). Linear dependence would make would make $\left(\mathbf{x}^{\top} \mathbf{X}\right)^{-1}$ impossible to calculate.
 
 
 ### 2.2.b. Show that the conditional expectation function $\mathbb{E}[\mathbf{y} \mid \mathbf{X}]$ is equivalent to $\mathbf{X} \beta$ for a linear regression model $\mathbf{y}=\mathbf{X} \beta+\mathbf{u}$ under the zero conditional mean assumption. (Make sure to state what that assumption is using appropriate notation.) In precise language, explain what the conditional expectation function is.
