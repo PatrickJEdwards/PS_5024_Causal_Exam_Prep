@@ -119,7 +119,7 @@ $$
 
 ## 2.2. OLS Estimator.
 
-### 2.2.a. We can describe an observed outcome variable $\mathbf{y}$ as a function of the explanatory variables $\mathbf{X}$ in the following form: $\mathbf{y}=\mathbf{X} \hat{\beta}+\hat{\mathbf{u}}$, where $\mathbf{y}$ is a column vector of length $n$, $\mathbf{X}$ is an $n \times k$ matrix, $\hat{\beta}$ is a column vector of length $k$, and $\hat{\mathbf{u}}$ is a column vector of length $n$. Given this setup, consider the following quantity (where ' indicates transpose):
+### 2.2.a. (***) We can describe an observed outcome variable $\mathbf{y}$ as a function of the explanatory variables $\mathbf{X}$ in the following form: $\mathbf{y}=\mathbf{X} \hat{\beta}+\hat{\mathbf{u}}$, where $\mathbf{y}$ is a column vector of length $n$, $\mathbf{X}$ is an $n \times k$ matrix, $\hat{\beta}$ is a column vector of length $k$, and $\hat{\mathbf{u}}$ is a column vector of length $n$. Given this setup, consider the following quantity (where ' indicates transpose):
 
 $$
 (\mathbf{y}-\mathbf{X} \hat{\beta})^{\prime}(\mathbf{y}-\mathbf{X} \hat{\beta})
@@ -155,7 +155,7 @@ $$
 
 ---
 
-### 2.2.b. Show that the conditional expectation function $\mathbb{E}[\mathbf{y} \mid \mathbf{X}]$ is equivalent to $\mathbf{X} \beta$ for a linear regression model $\mathbf{y}=\mathbf{X} \beta+\mathbf{u}$ under the zero conditional mean assumption. (Make sure to state what that assumption is using appropriate notation.) In precise language, explain what the conditional expectation function is.
+### 2.2.b. (***) Show that the conditional expectation function $\mathbb{E}[\mathbf{y} \mid \mathbf{X}]$ is equivalent to $\mathbf{X} \beta$ for a linear regression model $\mathbf{y}=\mathbf{X} \beta+\mathbf{u}$ under the zero conditional mean assumption. (Make sure to state what that assumption is using appropriate notation.) In precise language, explain what the conditional expectation function is.
 
 - **Zero Conditional Mean Assumption** (ZCMA): we assume that, on average, the error term will have a mean of zero, even when conditioned on all covariate values.
   - Formal expression:
@@ -220,7 +220,7 @@ $$
 
 \newpage
 
-### 2.2.d. Now we will derive the variance covariance matrix for $\hat{\beta}$. Assume that $\mathbb{E}\left[\mathbf{u} \mathbf{u}^{\prime} \mid \mathbf{X}\right]=\sigma^2 \mathbf{I}$, where $\mathbf{I}$ denotes the $n \times$ $n$ identity matrix. Given your result for $\hat{\beta}$ from (a) and given that we can write $\hat{\beta}$ as $\hat{\beta}=\beta+\left(\mathbf{X}^{\prime} \mathbf{X}\right)^{-1} \mathbf{X}^{\prime} \mathbf{u}$, derive the variance of the OLS estimator $\hat{\beta}$ using matrix notation. (Hint: Remember that the variance of a random variable is defined as the expected value of the squared deviation from the mean.)
+### 2.2.d. (***) Now we will derive the variance covariance matrix for $\hat{\beta}$. Assume that $\mathbb{E}\left[\mathbf{u} \mathbf{u}^{\prime} \mid \mathbf{X}\right]=\sigma^2 \mathbf{I}$, where $\mathbf{I}$ denotes the $n \times$ $n$ identity matrix. Given your result for $\hat{\beta}$ from (a) and given that we can write $\hat{\beta}$ as $\hat{\beta}=\beta+\left(\mathbf{X}^{\prime} \mathbf{X}\right)^{-1} \mathbf{X}^{\prime} \mathbf{u}$, derive the variance of the OLS estimator $\hat{\beta}$ using matrix notation. (Hint: Remember that the variance of a random variable is defined as the expected value of the squared deviation from the mean.)
 
 [**\textcolor{red}{NOT ANSWERED}**]
 
