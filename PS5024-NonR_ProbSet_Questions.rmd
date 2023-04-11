@@ -12,12 +12,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Essential Definitions/Explanations
 
+- **Stable Unit Treatment Valuue Assumption (SUTVA)**: (1) noninterference and (2) uniform/consistent treatment.
+  - Formally: $Y_{\left(D_1, D_2, \ldots, D_N\right) i}=Y_{\left(D_1^{\prime}, D_2^{\prime}, \ldots, D_N^{\prime}\right) i} \quad \text { if } \quad D_i=D_i^{\prime}$
 
 
 ## Essential Formulas.
 
 - **Covariance**: $\operatorname{cov}(Z,Y) = \mathbb{E}[ZY] - \mathbb{E}[Z] \cdot \mathbb{E}[Y]$.
-
+- $\mathbb{V}(\hat{\beta})=\mathbb{E}\left[(\hat{\beta}-\beta)(\hat{\beta}-\beta)^{\top} \mid \mathbf{X}\right]$
 
 
 
