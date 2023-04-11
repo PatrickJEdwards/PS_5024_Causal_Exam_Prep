@@ -181,7 +181,6 @@ $$
   - We further assume heteroskedasticity--that the error term is uncorrelated with the matrix $\mathbf{X}$. 
   - Then, conditioning on $\mathbf{X}$ changes nothing about the expectation of $u$ (adds no information since they are uncorrelated) and it remains 0.
 
-
 ---
 
 \newpage
@@ -217,12 +216,24 @@ $$
 
 ---
 
-
 \newpage
 
 ### 2.2.d. (***) Now we will derive the variance covariance matrix for $\hat{\beta}$. Assume that $\mathbb{E}\left[\mathbf{u} \mathbf{u}^{\prime} \mid \mathbf{X}\right]=\sigma^2 \mathbf{I}$, where $\mathbf{I}$ denotes the $n \times$ $n$ identity matrix. Given your result for $\hat{\beta}$ from (a) and given that we can write $\hat{\beta}$ as $\hat{\beta}=\beta+\left(\mathbf{X}^{\prime} \mathbf{X}\right)^{-1} \mathbf{X}^{\prime} \mathbf{u}$, derive the variance of the OLS estimator $\hat{\beta}$ using matrix notation. (Hint: Remember that the variance of a random variable is defined as the expected value of the squared deviation from the mean.)
 
-[**\textcolor{red}{NOT ANSWERED}**]
+$$
+\begin{aligned}
+  \mathbb{V}(\hat{\beta}) &= \mathbb{E}\left[\left(\hat{\beta} - \beta \right) \left(\hat{\beta} - \beta \right)^{\top} \mid \mathbf{X} \right] && (\text{By matrix definition of variance}) \\
+  &= \mathbb{E}\left\{ \left[\beta + \left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{u} - \beta \right] \left[\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{u} - \beta \right]^{\top} \mid \mathbf{X} \right\} && (\text{By given identity for } \hat{\beta}) \\
+  &= \mathbb{E}\left\{ \left[\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{u} \right] \left[\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{u} \right]^{\top} \mid \mathbf{X} \right\} && (\text{The } \beta \text{'s cancel out}) \\
+  &= \mathbb{E}\left\{ \left[\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{u} \right] \left[ \mathbf{u}^{\top} \mathbf{X} \left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \right] \mid \mathbf{X} \right\} && (\text{Distribute transpose}) \\
+  &= \mathbb{E}\left[ \left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{u} \mathbf{u}^{\top} \mathbf{X} \left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mid \mathbf{X} \right] && (\text{Remove parentheses}) \\
+  &= \left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbb{E}\left[ \mathbf{u} \mathbf{u}^{\top} \mid \mathbf{X} \right] \mathbf{X} \left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} && (\text{Pull out constants w.r.t. } \mathbf{X}) \\
+  &= \left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \sigma^2 \mathbf{I} \mathbf{X}\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} && \left(\text{By } \mathbb{E}\left[\mathbf{u} \mathbf{u}^{\top} \mid \mathbf{X}\right]=\sigma^2 \mathbf{I} \right) \\
+  &= \sigma^2 \mathbf{I}\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{X} \left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} && \left( \text{Pull out constant } \sigma^2 \right) \\
+  &= \sigma^2 \left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} && (\text{Inverses cancel}) \\
+  & && (\text{As desired})
+\end{aligned}
+$$
 
 
 ---
