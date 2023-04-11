@@ -290,7 +290,6 @@ $$
   - $\{Y_i(0), Y_{i-1}(0) \}$.
   
 
-
 #### 2.3.b.ii. For each polling station $i$, the number of unit treatment effects that can be defined.
 
 - For each polling station $i$, there are now **six** definable unit treatment effects:
@@ -300,8 +299,6 @@ $$
   - $\tau_{i4} = Y_i(1,0) - Y_i(0,0)$.
   - $\tau_{i5} = Y_i(1,0) - Y_i(0,1)$.
   - $\tau_{i6} = Y_i(0,1) - Y_i(0,0)$.
-  
-[**\textcolor{red}{Again, CHECK ANSWER}**]
 
 #### 2.3.b.iii. For the sample of polling stations, the number of (unconditional) average treatment effect estimands that can be defined.
 
@@ -434,6 +431,18 @@ $$
 
 # Problem Set 3.
 
+## 3.2.f. Your friend comes back to you and asks if your result from part e) [IRRELEVANT TO THIS QUESTION] is generalizable, or just an artifact of the parameters you chose for your simulation. Respond to your friend with reference to the following formula for the sampling variance of our ATE estimate $\hat{\tau}$ under clustered random assignment, where $n_1$ is the number of units in treatment, $n_0$ is the number of units in control, $M$ is the number of clusters, $\bar{y}_{0 j}$ is average untreated potential outcome in cluster $j$, and $\bar{y}_{1 j}$ is the average treated potential outcome in cluster $j$. Discuss at least two ways to reduce sampling variance in a clustered design.
+
+$$
+\operatorname{Var}(\hat{\tau})=\frac{1}{M-1}\left(\frac{n_0}{n_1} \operatorname{Var}\left(\bar{y}_{1 j}\right)+\frac{n_1}{n_0} \operatorname{Var}\left(\bar{y}_{0 j}\right)\right)
+$$
+
+- If we increase the number of clusters sampled $M$, the fraction $\frac{1}{M-1}$ indicates that the variation of the estimated average treatment effect decreases. However, if random assignment to treatment and control groups is left the same (i.e., the proportion of observations in the treatment and control groups remains the same as the total number of units increases), then adding new clusters will not effect the variance of the treatment mean and control mean. This indicates that increasing the number of clusters decreases variance in the estimator regardless of the values of the given parameters in this simulation.
+- Two ways we can reduce sampling variance in clustered designs:
+  - First, sample more clusters (based on the argument provided above).
+  - Second, decrease the difference in variance between each mean (i.e., try to get as close to $\operatorname{Var}\left(\bar{y}_{1 j}\right) = \operatorname{Var} \left(\bar{y}_{0 j} \right)$ as possible). This means including in your sample more clusters that are similar to each other in the covariates. By doing this, you make it easier to attribute difference in the means to the treatment effect and not random noise.
+
+
 ## 3.3. ATE and the Difference-in-Means Variance.
 
 **Consider a field experiment that compares treatments A and B (You can think of B as the absence of a treatment, i.e. the "treatment" received by the control group). Suppose there are $N$ subjects, indexed by $i=1, \ldots, N$. Let $x_i$ be the response of subject $i$ to treatment $A$; likewise, $y_i$ is the response to receiving treatment $B$ (the control). For each $i$, either $x_i$ or $y_i$ can be observed, but not both. Let $S$ be a random subset of $\{1, \ldots, N\}$, with $n$ elements; this group gets treatment A, so $x_i$ is observed for $i$ in $S$. Let $T$ be a random subset of $\{1, \ldots, N\}$, with $m$ elements, disjoint from $S$. This group gets treatment $B$, so $y_i$ is observed for $i$ in $T$.**
@@ -455,12 +464,33 @@ $$
 
 ### 3.3.a. What is the average treatment effect parameter? Write it using the above notation and also explain what it is in words.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- The average treatment effect parameter is the difference in the respective population means, which are themselves estimated by the difference in sample means [**\textcolor{red}{Check Answer}**]:
+
+$$
+\begin{aligned}
+  \tau_{ATE} &= \bar{X} - \bar{Y} && \text{(Population difference in means)} \\
+  &= \frac{1}{n} \sum_i^n x_i - \frac{1}{m} \sum_i^m y_i && \text{(Sample difference in means)}
+\end{aligned}
+$$
+
+[**\textcolor{orange}{Check Answer}**]
 
 
 ### 3.3.b. What is the variance of the average treatment effect estimator, i.e. $\operatorname{var}(\bar{X}-\bar{Y})$, using the above notation?
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- The variance of the difference between random variables/estimators $\bar{X}$ and $\bar{Y}$ is their variances plus their covariance [**\textcolor{orange}{Check Answer}**]:
+
+$$
+\begin{aligned}
+\mathbb{V}(\bar{X}-\bar{Y}) & =\mathbb{V}(\bar{X})+\mathbb{V}(-\bar{Y})+2 \cdot \operatorname{cov}(\bar{X},-\bar{Y}) \\
+& =\mathbb{V}(\bar{X})+\mathbb{V}(\bar{Y})-2 \cdot \operatorname{cov}(\bar{X}, \bar{Y}) && (\text{Pull out constant } -1) \\
+& =\frac{N-n}{N-1} \frac{\sigma^2}{n}+\frac{N-m}{N-1} \frac{\tau^2}{m}-2 \cdot\left[-\frac{1}{N-1} \operatorname{cov}(x, y)\right] && (\text{Given}) \\
+& =\frac{N-n}{N-1} \frac{\sigma^2}{n}+\frac{N-m}{N-1} \frac{\tau^2}{m}+\frac{2}{N-1} \operatorname{cov}(x, y) && (\text{Simplify}) \\
+& =\frac{1}{N-1}\left[\frac{(N-n) \cdot \sigma^2}{n}+\frac{(N-m) \cdot \tau^2}{m}+2 \cdot \operatorname{cov}(x, y)\right] && (\text{Pull out common denominator})
+\end{aligned}
+$$
+
+[**\textcolor{orange}{Check Answer}**]
 
 
 ### 3.3.c. The usual two sample difference-in-means variance (without replacement) found in sampling textbooks is:
@@ -471,7 +501,9 @@ $$
 
 **What is the difference, if any, between the usual two sample difference-in-means variance and the "true" variance expression you derived in part b? Can we observe this difference in the data we have?**
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- The **covariance term** $2\cdot \operatorname{cov}(x,y)$ is the biggest difference between the two *sample* difference in means variance and the *true* variance. The covariance term is present in the *true* variance but not the sample variance. This is because we cannot observe this covariance term, as we cannot simultaneously observe the actual potential outcomes under treatment and control.
+
+[**\textcolor{orange}{Check Answer}**]
 
 
 \newpage
