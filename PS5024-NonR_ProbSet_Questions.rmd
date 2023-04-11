@@ -22,7 +22,8 @@ knitr::opts_chunk$set(echo = TRUE)
   - Thus, the Bernoulli distribution has the following expected value: $\mathbb{E}\left[z_{i}\right]=\frac{n}{N}$
 - An estimator is unbiased if $\mathbb{E}(\tilde{y}_i - \mu_y) = 0 \Rightarrow \mathbb{E}(\tilde{y}_i) = \mu_y$. Let's prove this:
 
-\begin{align*}
+$$
+\begin{aligned}
 \mathbb{E}(\tilde{y}_i) &= \mathbb{E}\left[\frac{1}{n} \sum_{i=1}^N \left( z_i y_i \right) \right] && (\text{By Definition of $\tilde{y}_i$}) \\
 &= \frac{1}{n}\mathbb{E}\left[ \sum_{i=1}^N \left( z_i y_i \right) \right] \\
 &= \frac{1}{n}\sum_{i=1}^N\left[\mathbb{E} \left( z_i y_i \right) \right] && (\text{By linearity of expectation}) \\
@@ -31,7 +32,8 @@ knitr::opts_chunk$set(echo = TRUE)
 &= \frac{1}{n} \cdot \frac{n}{N} \sum_{i=1}^N\left[y_i \right] \\
 &= \frac{1}{N} \sum_{i=1}^N\left[y_i \right] \\
 &= \mu_y && (\text{As desired.})
-\end{align*}
+\end{aligned}
+$$
 
 - This would not still be true if we lacked a simple random sample. If we were to over-sample higher values of $y_i$ than lower values, then $\mathbb{E}(\tilde{y}_i) > \mu_y$.
 
@@ -568,23 +570,148 @@ Total & 400 & 240 & 160 & 800 \\
 \end{tabular}
 \end{center}
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- The expression for $\tau$---where $\pi = \operatorname{Pr}(D_i = 1)$ and $1-\pi = \operatorname{Pr}(D_i = 0)$ ---follows:
 
+$$
+\begin{aligned}
+  \tau &= \mathbb{E}[Y_{i1} - Y_{i0}] \\
+  &= \pi \cdot \text{ATT} + [1-\pi]\cdot \text{ATU} \\
+  &= \pi \left\{ \mathbb{E}\left[Y_{i1} \mid D=1\right]- \mathbb{E}\left[Y_{i0} \mid D=1\right] \right\} + [1-\pi] \left\{ \mathbb{E}\left[Y_{i1} \mid D=0\right] - \mathbb{E}\left[Y_{i0} \mid D=0\right] \right\} \\
+  &= \pi \cdot \mathbb{E}\left[Y_{i1} \mid D=1\right] - \pi \cdot \mathbb{E}\left[Y_{i0} \mid D=1\right] + [1-\pi] \cdot \mathbb{E}\left[Y_{i1} \mid D=0\right] - [1-\pi] \cdot  \mathbb{E}\left[Y_{i0} \mid D=0\right]\\
+  &= \pi \cdot \mathbb{E}\left[Y_{i1} \mid D=1\right]+ [1-\pi] \cdot \mathbb{E}\left[Y_{i1} \mid D=0\right] - \pi \cdot \mathbb{E}\left[Y_{i0} \mid D=1\right] - [1-\pi] \cdot  \mathbb{E}\left[Y_{i0} \mid D=0\right] \\
+  &= \color{blue}{\operatorname{Pr}(D_i = 1) \cdot \mathbb{E}\left[Y_{i1} \mid D=1\right]+ \operatorname{Pr}(D_i = 0) \cdot \mathbb{E}\left[Y_{i1} \mid D=0\right] -} \\ 
+    & \quad \color{blue}{\left[ \operatorname{Pr}(D_i = 1) \cdot \mathbb{E}\left(Y_{i0} \mid D=1\right) + \operatorname{Pr}(D_i = 0) \cdot  \mathbb{E}\left(Y_{i0} \mid D=0\right) \right]}
+\end{aligned}
+$$
+
+- Now create new table with derived from empirical data:
+
+\begin{center}
+\begin{tabular}{cccc}
+\hline$d$ & $\operatorname{Pr}\left(D_i=d\right)$ & $\mathbb{E}\left[Y_i(1) \mid D_i=d\right]$ & $\mathbb{E}\left[Y_i(0) \mid D_i=d\right]$ \\
+\hline 1 & $\frac{5}{8}$ & $73$ & $\mathbb{E}\left[Y_i(0) \mid D_i=1\right]$ \\
+0 & $\frac{3}{8}$ & $\mathbb{E}\left[Y_i(1) \mid D_i=0\right]$ & $56$ \\
+\hline
+\end{tabular}
+\end{center}
 
 ### 6.1.b. Suppose you have some reason to be concerned about the identifying assumption of conditional ignorability. Calculate sharp bounds for $\tau$ without making any assumptions at all. Explain in simple, concise language what these bounds represent. You may find it helpful to use the table you produced in part (a) and fill in the values that produce the upper and lower no-assumptions sharp bounds.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- Calculate sharp bounds for $\tau$ without making assumptions. The outcome variable *political self-efficacy* is measured using a thermometer-style scale ranging from $0$ to $100$. 
+
+#### 6.1.b.i. **Sharp Lower Bound**: Worst Possible Outcome.
+
+- Let's assume that the treated units would have the best possible outcome $\bar{Y} = 100$ if left untreated and the control units would have the worst possible outcome $\underline{Y} = 0$ if treated. Thus, we can reproduce the table with these pessimistic assumptions:
+
+\begin{center}
+\begin{tabular}{cccc}
+\hline$d$ & $\operatorname{Pr}\left(D_i=d\right)$ & $\mathbb{E}\left[Y_i(1) \mid D_i=d\right]$ & $\mathbb{E}\left[Y_i(0) \mid D_i=d\right]$ \\
+\hline 1 & $\frac{5}{8}$ & $73$ & $\overline{Y} = 100$ \\
+0 & $\frac{3}{8}$ & $\underline{Y} = 0$ & $56$ \\
+\hline
+\end{tabular}
+\end{center}
+
+- Now let's calculate the sharp lower bound $\tau$ with this information:
+
+\begin{align*}
+\underline{\tau} &= \frac{5}{8} \cdot 73 + \frac{3}{8} \cdot 0 - \frac{5}{8} \cdot 100 - \frac{3}{8} \cdot 56 \\
+&= -\frac{303}{8} \\
+&= -37.875 
+\end{align*}
+
+#### 6.1.b.ii. **Sharp Upper Bound**: Best Possible Outcome
+
+- Now, let's assume that the treated units would have the worst possible outcome $\bar{Y} = 100$ if left untreated and the control units would have the best possible outcome $\underline{Y} = 0$ if treated. Thus, we can reproduce the table with these optimistic assumptions:
+
+\begin{center}
+\begin{tabular}{cccc}
+\hline$d$ & $\operatorname{Pr}\left(D_i=d\right)$ & $\mathbb{E}\left[Y_i(1) \mid D_i=d\right]$ & $\mathbb{E}\left[Y_i(0) \mid D_i=d\right]$ \\
+\hline 1 & $\frac{5}{8}$ & $73$ & $\underline{Y} = 0$ \\
+0 & $\frac{3}{8}$ & $\overline{Y} = 100$ & $56$ \\
+\hline
+\end{tabular}
+\end{center}
+
+- Now let's calculate the sharp upper bound $\tau$ with this information:
+
+\begin{align*}
+\overline{\tau} &= \frac{5}{8} \cdot 73 + \frac{3}{8} \cdot 100 - \frac{5}{8} \cdot 0 - \frac{3}{8} \cdot 56 \\
+&= \frac{497}{8} \\
+&= 62.125
+\end{align*}
+
+- Then the final interval for $\tau$ is:
+
+\begin{align*}
+\tau &\in [\underline{\tau}, \overline{\tau}] \\
+&\in [-37.875, 62.125]
+\end{align*}
+
+- This interval is far too broad for it to be plausible or practical.
 
 
 ### 6.1.c. One possible threat to identification is that constituents with higher self-efficacy are more likely to follow up on their requests, and in turn more likely to receive assistance from their representatives (assume follow-up requests are not captured in the survey). If this were the case, treated constituents would tend to have greater self-efficacy than untreated units, whether or not they received treatment. State this assumption formally and use it to calculate new bounds.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- **Monotone Treatment Selection (MTS) Assumption**: In this case, the MTS assumption states that the surveyed individuals that received treatment (receiving a representative's assistance) already have higher self-efficacy.
+  - [\textcolor{orange}{NEEDS BETTER DEFINITION/EXPLANATION OF MTS ASSUMPTION}]
+  - Formal expression:
+
+$$
+\begin{aligned}
+& \mathbb{E}\left[Y_{0 i} \mid D_i=0\right] \leq \mathbb{E}\left[Y_{0 i} \mid D_i=1\right] \\
+& \mathbb{E}\left[Y_{1 i} \mid D_i=0\right] \leq \mathbb{E}\left[Y_{1 i} \mid D_i=1\right]
+\end{aligned}
+$$
+
+- If we use the MTS assumption to calculate a new upper bound, we get the following:
+
+$$
+\begin{aligned}
+\tau &= \frac{5}{8} \cdot E\left[Y_{i1} \mid D=1\right]+ \frac{3}{8} \cdot E\left[Y_{i1} \mid D=0\right] - \frac{5}{8} \cdot E\left[Y_{i0} \mid D=1\right] - \frac{3}{8} \cdot  E\left[Y_{i0} \mid D=0\right] \\
+ & \leq \frac{5}{8} \cdot E\left[Y_{i1} \mid D=1\right]+ \frac{3}{8} \cdot E\left[Y_{i1} \mid D=1\right] - \frac{5}{8} \cdot E\left[Y_{i0} \mid D=1\right] - \frac{3}{8} \cdot  E\left[Y_{i0} \mid D=1\right] \\
+ & \leq E\left[Y_{i1} \mid D=1\right] - E\left[Y_{i0} \mid D=1\right] \\
+ & \leq 73 - 56 \\
+ & \leq 17
+\end{aligned}
+$$
+
+- This is the new bound given the MTS assumption:
+
+$$
+\begin{aligned}
+\tau &\in [\underline{\tau}, \tau_{MTS}] \\
+&\in [-37.875, 17]
+\end{aligned}
+$$
+
+- This is a tighter bound, but it still crosses zero. Therefore, it's not clear that the ATE is different than zero.
+
 
 
 ### 6.1.d. Now consider that elected representatives have limited time and resources and must make strategic decisions about which requests to prioritize. Representatives want to maximize the probability of winning re-election, and they know there are greater payoffs to responding to requests from high income people, who more likely to both turn out and make large campaign donations. Assume representatives can accurately guess a constituent's income level based on factors like the constituent's address and the type of request. As a result of this incentive structure, the probability of response to requests from high-income constituents is unrelated the number of times they follow up (and therefore unrelated to pre-existing levels of self-efficacy). For low- and middle-income constituents, however, positive self-selection may still hold. Express this assumption formally. Would the resulting bounds be more or less credible than those under your assumption in (c)? Explain.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- If self-efficacy is unrelated to a representative's response for high-income residents but still related to a representative's response for low- and middle-income residents, then we'd expect there to be no difference in the outcomes of treated vs. untreated high-income residents, but the same relationship as identified in problem (1c) for low- and middle-income residents.
+- Let's express this formally:
+  - For low income residents:
 
+$$
+\begin{aligned}
+\mathbb{E}\left[Y_{0 i} \mid D_i=0 \cap X_i \in \{1,2 \} \right] &\leq \mathbb{E}\left[Y_{0 i} \mid D_i=1 \cap X_i \in \{1,2 \} \right] \\
+\mathbb{E}\left[Y_{1 i} \mid D_i=0 \cap X_i \in \{1,2 \} \right] &\leq \mathbb{E}\left[Y_{1 i} \mid D_i=1 \cap X_i \in \{1,2 \} \right]
+\end{aligned}
+$$
+
+  - But for high income resident, there is no difference:
+
+$$
+\begin{aligned}
+\mathbb{E}\left[Y_{0 i} \mid D_i=0 \cap X_i = 3 \right] &= \mathbb{E}\left[Y_{0 i} \mid D_i=1 \cap X_i = 3 \right] \\
+\mathbb{E}\left[Y_{1 i} \mid D_i=0 \cap X_i = 3 \right] &= \mathbb{E}\left[Y_{1 i} \mid D_i=1 \cap X_i = 3 \right]
+\end{aligned}
+$$
+
+- I would think that the bounds we'd fine in this case would be *more* credible because we're making the MTS assumption on a smaller segment of the survey sample. 
 
 ### 6.1.e. Use the assumption described in (d) and the following table of conditional expectations to calculate new bounds.
 
@@ -595,7 +722,41 @@ Total & 400 & 240 & 160 & 800 \\
 \hline
 \end{tabular}
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- [**\textcolor{red}{CHECK ANSWER}**]
+- Okay let's do the calculations (where $\pi$ isn't a set quantity. Rather, it's a placeholder for that segment of the survey population's probability/proportion of the sample) [**\textcolor{red}{CHECK ANSWER}**]:
+
+$$
+\begin{aligned}
+\tau = \pi & \cdot E\left[Y_{i1} \mid D=1\right]+ [1-\pi] \cdot E\left[Y_{i1} \mid D=0\right] - \pi \cdot E\left[Y_{i0} \mid D=1\right] - [1-\pi] \cdot  E\left[Y_{i0} \mid D=0\right] \\
+ = \pi & \cdot E\left[Y_{i1} \mid D=1 \cap X_i = 1 \right]+ [1-\pi] \cdot E\left[Y_{i1} \mid D=0 \cap X_i = 1 \right] \\
+ & - \pi \cdot E\left[Y_{i0} \mid D=1 \cap X_i = 1 \right] - [1-\pi] \cdot  E\left[Y_{i0} \mid D=0  \cap X_i = 1 \right] \\
+ & + \pi \cdot E\left[Y_{i1} \mid D=1 \cap X_i = 2 \right] + [1-\pi] \cdot E\left[Y_{i1} \mid D=0 \cap X_i = 2 \right] \\
+ & - \pi \cdot E\left[Y_{i0} \mid D=1 \cap X_i = 2 \right] - [1-\pi] \cdot  E\left[Y_{i0} \mid D=0 \cap X_i = 2 \right] \\
+ & + \pi \cdot E\left[Y_{i1} \mid D=1 \cap X_i = 3 \right] + [1-\pi] \cdot E\left[Y_{i1} \mid D=0 \cap X_i = 3 \right] \\
+ & - \pi \cdot E\left[Y_{i0} \mid D=1 \cap X_i = 3 \right] - [1-\pi] \cdot  E\left[Y_{i0} \mid D=0 \cap X_i = 3 \right] \\
+ \leq \pi & \cdot E\left[Y_{i1} \mid D=1 \cap X_i = 1 \right]+ [1-\pi] \cdot E\left[Y_{i1} \mid D=1 \cap X_i = 1 \right] \\
+ & - \pi \cdot E\left[Y_{i0} \mid D=1 \cap X_i = 1 \right] - [1-\pi] \cdot  E\left[Y_{i0} \mid D=1  \cap X_i = 1 \right] \\
+ & + \pi \cdot E\left[Y_{i1} \mid D=1 \cap X_i = 2 \right] + [1-\pi] \cdot E\left[Y_{i1} \mid D=1 \cap X_i = 2 \right] \\
+ & - \pi \cdot E\left[Y_{i0} \mid D=1 \cap X_i = 2 \right] - [1-\pi] \cdot  E\left[Y_{i0} \mid D=1 \cap X_i = 2 \right] \\
+ & + \pi \cdot E\left[Y_{i1} \mid D=1 \cap X_i = 3 \right] + [1-\pi] \cdot E\left[Y_{i1} \mid D=1 \cap X_i = 3 \right] \\
+ & - \pi \cdot E\left[Y_{i0} \mid D=1 \cap X_i = 3 \right] - [1-\pi] \cdot  E\left[Y_{i0} \mid D=1 \cap X_i = 3 \right] \\
+ \leq \text{  } \text{  } \text{  } & \frac{1}{2} \cdot \left\{ E\left[Y_{i} \mid D=1 \cap X_i = 1 \right] - E\left[Y_{i} \mid D=0 \cap X_i = 1 \right] \right\} \\
+ & + \frac{3}{10} \cdot \left\{  E\left[Y_{i} \mid D=1 \cap X_i = 2 \right] - E\left[Y_{i} \mid D=0 \cap X_i = 2 \right] \right\} + \frac{1}{5} \cdot 0 \\
+ \leq \text{  } \text{  } \text{  } & \frac{1}{2}\cdot (69 - 51) + \frac{3}{10}\cdot (73 - 55) \\
+ \leq \text{  } \text{  } \text{  } & \frac{72}{5} \\
+ \leq \text{  } \text{  } \text{  } & 14.4
+\end{aligned}
+$$
+
+- Then the new bound is [**\textcolor{red}{CHECK ANSWER}**]: 
+
+$$
+\begin{aligned}
+  \tau \in [-37.875, 14.4]
+\end{aligned}
+$$
+
+[**\textcolor{red}{CHECK ANSWER}**]
 
 
 \newpage
@@ -618,8 +779,88 @@ $$
 
 **where $\operatorname{cov}(\cdot)$ is the sample covariance; $\bar{Y}_0$ and $\bar{X}_0$ are the sample averages of $Y_i$ and $X_i$ over the part of the sample with $Z_i=0$; and $\bar{Y}_1$ and $\bar{X}_1$ are the sample averages of $Y_i$ and $X_i$ over the part of the sample with $Z_i=1$.**
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- i.e., we need to show that:
 
+$$
+\hat{\beta}_{\text {IV }}=\frac{\operatorname{cov}\left(Z_{i}, Y_{i}\right)}{\operatorname{cov}\left(Z_{i}, X_{i}\right)} \Leftrightarrow \frac{\left(\bar{y}_{1}-\bar{y}_{0}\right)}{\left(\bar{x}_{1}-\bar{x}_{0}\right)}
+$$
+
+- I first show that $\operatorname{cov}\left(Z_{i}, Y_{i}\right) \Leftrightarrow\left(\bar{Y}_{1}-\bar{Y}_{0}\right)$. 
+  - If I can show that this is true for the numerator, then it's also true for the denominator.
+- First, Let's establish several preliminary conclusions and definitions that will be used in the final proof. All of these will be for $Y_i$ (the numerator) but also hold true if we replace it with $X_i$ (the denominator)
+  - **Preliminary 1**: By the given definitions of $\bar{Y}_{1}, \bar{Y}_{0}, \bar{X}_{1}$, and $\bar{X}_{0}$ and that $Z_{i}$ is a binary variable:
+
+
+$$
+\begin{array}{ll}
+\bar{Y}_{1}-\bar{Y}_{0}=\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right]-\mathbb{E}\left[Y_{i} \mid Z_{i}=0\right] & \quad (P1)
+\end{array}
+$$
+
+  - **Preliminary 2**: By the definition of covariance:
+
+$$
+\begin{array}{ll}
+\operatorname{cov}\left(Z_{i}, Y_{i}\right)=\mathbb{E}\left[Z_{i} Y_{i}\right]-\mathbb{E}\left[Z_{i}\right] \mathbb{E}\left[Y_{i}\right] & \quad  \left(P2 \right)
+\end{array}
+$$
+
+  - **Preliminary 3**: By definition of expected value for binary variable $z_{i}$:
+
+$$
+\begin{aligned}
+\mathbb{E}\left[z_{i}\right] & =1 \cdot \operatorname{P}\left(z_{i}=1\right)+0 \cdot \operatorname{P}\left(z_{i}=0\right) \\
+& =\operatorname{P}\left(z_{i}=1\right) & \quad \left(P3 \right)
+\end{aligned}
+$$
+
+  - **Preliminary 4**: By the law of total expectation \& discrete $Z_{i} \in \{0,1\}$:
+
+$$
+\begin{aligned}
+\mathbb{E}\left[Y_{i}\right] & =\sum_{Z_{i}=0}^{1}\left\{\mathbb{E}\left[Y_{i} \mid Z_{i}=z_{i}\right] \cdot \operatorname{P}\left(Z_{i}=z_{i}\right)\right\} \\
+& =\mathbb{E}\left[Y_{i} \mid Z_{i}=0\right] \cdot \operatorname{P}\left(Z_{i}=0\right)+\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right] \cdot \operatorname{P}\left(Z_{i}=1\right) & \quad (P4)
+\end{aligned}
+$$
+
+  - **Preliminary 5**: Note that $\mathbb{E} \left[Y_i | Z_i = 1 \right] = \sum_{Y_i} y_i \frac{\operatorname{P}(Y_i, Z_i = 1)}{\operatorname{P}(Z_i = 1)}$. Then, by the law of total expectation \& discrete $Z_{i} \in \{0,1 \}$:
+
+$$
+\begin{aligned}
+\mathbb{E}\left[Y_{i} \cdot Z_{i}\right] & =\sum_{Y_{i}} \sum_{Z_{i}} y_{i} z_{i} \operatorname{P}\left(Y_{i}, Z_{i}\right) \\
+& =\sum_{Y_{i}} y_{i} \cdot 0 \cdot \operatorname{P}\left(Y_{i}, Z_{i}=0\right)+\sum_{Y_{i}} y_{i} \cdot 1 \cdot \operatorname{P}\left(Y_{i}, Z=1\right) \\
+& =\sum_{Y_{i}} y_{i} \cdot \operatorname{P}\left(Y_{i}, Z_{i}=1\right) \\
+& =\sum_{Y_{i}} y_{i} \cdot \operatorname{P}\left(Y_{i}, Z_{i}=1\right) \cdot \frac{\operatorname{P}\left(Z_{i}=1\right)}{\operatorname{P}\left(Z_{i}=1\right)} \\
+& =\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right] \cdot \operatorname{P}\left(Z_{i}=1\right) & \quad (P5)
+\end{aligned}
+$$
+
+- Given these preliminary conclusions and definitions, we can finally show that $\operatorname{cov}\left(Z_{i}, Y_{i}\right) = \left(\bar{Y}_{1} - \bar{Y}_{0}\right)$:
+
+$$
+\begin{aligned}
+& \operatorname{Cov}\left(Z_{i}, Y_{i}\right)=\mathbb{E}\left[Z_{i} \cdot Y_{i}\right]-\mathbb{E}\left[Z_{i}\right] \mathbb{E}\left[Y_{i}\right] & (\text{By} \quad P2) \\
+& =\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right] \cdot \operatorname{P}\left(Z_{i}=1\right)-\operatorname{P}\left(Z_{i}=1\right) \cdot\left\{\mathbb{E}\left[Y_{i} \mid Z_{i}=0\right] \cdot \operatorname{P}\left(Z_{i}=0\right)+\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right] \cdot \operatorname{P}\left((Z_{i}=1\right)\right\} & (\text{By} \quad P3, P4) \\
+& =\operatorname{P}\left((Z_{i}=1\right)\left\{\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right]-\mathbb{E}\left[Y_{i} \mid Z_{i}=0\right] \cdot \operatorname{P}\left(Z_{i}=0\right)-\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right] \cdot \operatorname{P}\left(Z_{i}=1\right)\right\} \\
+& =\operatorname{P}\left(Z_{i}=1\right)\left\{\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right]-\mathbb{E}\left[Y_{i} \mid Z_{i}=0\right]\left[1-\operatorname{P}\left(Z_{i}=1\right)\right]-\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right] \cdot \operatorname{P}\left(Z_{i}=1\right)\right\} \\
+& =\operatorname{P}\left(Z_{i}=1\right)\left\{\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right]-\mathbb{E}\left[Y_{i} \mid Z_{i}=0\right]+\mathbb{E}\left[Y_{i} \mid Z_{i}=0\right] \cdot \operatorname{P}\left(Z_{i}=1\right)-\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right] \cdot \operatorname{P}\left(Z_{i}=1\right)\right\} \\
+& =\operatorname{P}\left(Z_{i}=1\right)\left\{\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right]-\mathbb{E}\left[Y_{i} \mid Z_{i}=0\right]-\operatorname{P}\left(Z_{i}=1\right)\left(\mathbb{E}\left[Y_{i} \mid Z_{i}=1\right]-\mathbb{E}\left[Y_{i} \mid Z_{i}=0\right]\right)\right\} \\
+& =\operatorname{P}\left(Z_{i}=1\right)\left\{\bar{Y}_{1}-\bar{Y}_{0}-\operatorname{P}\left(Z_{i}=1\right)\left(\bar{Y}_{1}-\bar{Y}_{0}\right)\right\} \\
+& =\operatorname{P}\left(Z_{i}=1\right)\left\{\left[1-\operatorname{P}\left(Z_{i}=1\right)\right]\left(\bar{Y}_{1}-\bar{Y}_{0}\right)\right\} \\
+& =\operatorname{P}\left(Z_{i}=1\right) \cdot \operatorname{P}\left(Z_{i}=0\right) \cdot\left(\bar{Y}_{1}-\bar{Y}_{0}\right)
+\end{aligned}
+$$
+
+  - Again, this also holds for the denominator. 
+- Thus, we get the following outcome:
+
+$$
+\begin{aligned}
+\hat{\beta}_{I V} & =\frac{\operatorname{cov}\left(Z_{i}, Y_{i}\right)}{\operatorname{cov}\left(Z_{i}, X_{i}\right)} \\
+& =\frac{\operatorname{P}\left(Z_{i}=1\right) \cdot \operatorname{P}\left(Z_{i}=0\right) \cdot\left(\bar{Y}_{1}-\bar{Y}_{0}\right)}{\operatorname{P}\left(Z_{i}=1\right) \cdot \operatorname{P}\left(Z_{i}=0\right) \cdot\left(\bar{X}_{1}-\bar{X}_{0}\right)} \\
+& =\frac{\bar{Y}_{1}-\bar{Y}_{0}}{\bar{X}_{1}-\bar{X}_{0}} && (\text{As desired})
+\end{aligned}
+$$
 
 ### 7.1.b. Let $\mathbf{X}=\left[1, X_1, X_2, \cdots, X_k, D\right]$ and $\mathbf{Z}=\left[1, X_1, X_2, \cdots, X_k, Z\right]$. The matrix $\mathbf{X}$ contains the covariates (including a vector of 1s) and your treatment vector $D$, and $\mathbf{Z}$ is a matrix of the same covariates and the instrument for the treatment variable in place of the actual treatment. $Y$ is a vector of observed outcomes. We can construct the following system of linear equations, with error terms $u_2$ and $u_1$ respectively:
 
@@ -640,7 +881,28 @@ $$
 
 #### 7.1.b.i. What are the conditions under which the treatment effect estimate $\hat{\beta}_{I V}$ is consistent?
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- There are three conditions under which $\hat{\beta}_{IV}$ is consistent:
+  - 1. **Exogeneity**: The instrument $Z$ must be as good as random conditional on the other covariates. 
+    - In other words, $Z$ must be uncorrelated with the error term $u_1$:
+
+$$
+\operatorname{Cov}\left[u_1, Z \right] = 0
+$$
+
+- 2. **Exclusion Restriction**: The instrument $Z$ must have no direct effect on $Y$, the outcome variable. 
+  - Instead, $Z$ should only affect $Y$ via the treatment variable $D$:
+
+$$
+\operatorname{Cov}\left[u_2, D \right] = 0
+$$
+
+- 3. **Relevance**: The instrument $Z$ must be significantly correlated with the treatment variable $D$. 
+  - In other words, $Z$ must have a (reasonably strong) effect on $D$.
+
+- On a final (somewhat unrelated) note, please keep in mind that The 2SLS estimator, in contrast, is consistent, but biased. 
+  - This means that the 2SLS estimator only promises to be close the causal effect of interest in large samples. 
+    - In small samples, the 2SLS estimator can differ systematically from the population estimand. 
+  - The 2SLS estimator is most biased when the instruments are weak, meaning the correlation with endogenous regressors is low, and when there are many over-identifying restrictions.
 
 
 #### 7.1.b.ii. Now let's obtain the Two-stage Least Squares estimator. We can do that following these next steps.
@@ -651,7 +913,72 @@ $$
 
 **Show formally that $\hat{\beta}_{2 S L S}=\left(\hat{\mathbf{X}}^{\prime} \hat{\mathbf{X}}\right)^{-1} \hat{\mathbf{X}}^{\prime} Y=\left(\mathbf{Z}^{\prime} \mathbf{X}\right)^{-1} \mathbf{Z}^{\prime} Y=\hat{\beta}_{I V}$. Comment on the steps along the way to reach your conclusion. If you need any additional assumptions, please state them.**
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- [\textcolor{red}{NEEDS CONSOLIDATION: we need to pare down to a shorter but still palatable proof}]
+
+$$
+\begin{aligned}
+& \hat{\beta}_{2SLS}=\left(\hat{\mathbf{X}}^{\top} \hat{\mathbf{X}}\right)^{-1} \hat{\mathbf{X}}^{\top} Y \\
+& =\left(\left[\begin{array}{c}
+1 \\
+X_{1} \\
+\vdots \\
+X_{k} \\
+\hat{D}
+\end{array}\right]\left[1, X_{1}, \ldots, X_{k}, \hat{D}\right]\right)^{-1}\left[\begin{array}{l}
+1 \\
+X_{1} \\
+\vdots \\
+X_{k} \\
+\hat{D}
+\end{array}\right] Y \\
+& =\left(\left[\begin{array}{c}
+1 \\
+X_{1} \\
+\vdots \\
+X_{k} \\
+\mathbf{Z} \hat{\pi}
+\end{array}\right]\left[1, X_{1}, \ldots, X_{k}, \mathbf{Z} \hat{\pi}\right]\right)^{-1}\left[\begin{array}{c}
+1 \\
+X_{1} \\
+\vdots \\
+X_{k} \\
+\mathbf{Z} \hat{\pi}
+\end{array}\right] Y \quad\left(\begin{array}{c}
+\text { since } \\
+\hat{D}=\mathbf{Z} \hat{\pi}
+\end{array}\right) \\
+& =\left(\left[\begin{array}{c}
+1 \\
+X_{1} \\
+\vdots \\
+X_{k} \\
+\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top} D
+\end{array}\right]\left[1, X_{1}, \ldots, X_{n}, \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} D\right]\right)^{-1}\left[\begin{array}{l}
+1 \\
+X_{1} \\
+\vdots \\
+X_{k} \\
+\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top} D
+\end{array}\right] Y\left(\begin{array}{c}
+\text{By} \\
+\text{definition} \\
+\text{of } \hat{\pi}
+\end{array}\right) \\
+& =\left\{ \left(\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top} \left[1, X_{1}, \ldots, X_{k}, D\right] \right)^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}\left[1, X_{1}, \ldots, X_{k}, D\right]\right\}^{-1} \left\{\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  \left[1, X_{1}, \ldots, X_{k}, D\right]  \right\}^{\top} Y \\
+& =\left\{ \left(\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top} \mathbf{X} \right)^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}\mathbf{X}\right\}^{-1} \left\{\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top} \mathbf{X} \right\}^{\top} Y \\
+& =\left\{ \mathbf{X}^{\top}\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}\mathbf{X}\right\}^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\
+& =\left\{ \mathbf{X}^{\top}\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{I}_n \mathbf{Z}^{\top}\mathbf{X}\right\}^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\
+& =\left\{ \mathbf{X}^{\top}\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}\mathbf{X}\right\}^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\
+& =\left[\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}\mathbf{X}\right]^{-1} \left(\mathbf{X}^{\top}\mathbf{Z} \right)^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\
+& =\left[\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}\mathbf{X}\right]^{-1} \mathbf{I}_n \left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\
+& =\left[\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}\mathbf{X}\right]^{-1} \left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\
+& = \left(\mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \left[\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \right]^{-1} \left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\
+& = \left(\mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \mathbf{Z}^{\top} \mathbf{Z} \left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top} Y \\
+& = \left(\mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \mathbf{I}_n \mathbf{Z}^{\top} Y \\
+& = \left(\mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \mathbf{Z}^{\top} Y \\
+& =\hat{\beta}_{\text {IV }} \quad (\text{As desired})
+\end{aligned}
+$$
 
 
 
@@ -673,7 +1000,28 @@ $$
 
 ### 7.3.b. Name the five assumptions underpinning instrumental variables as a strategy for identifying the effect of an endogenous treatment on the outcome for compliers. Write out each assumption formally in terms of $Z_i, D_i$, and $Y_i$. In your own words, interpret each assumption with regard to the specific setup of A.JR's study. Finally, discuss the plausibility of each assumption. (Hint: It may be useful to refer to your DAG from (a) in interpreting and assessing some assumptions.)
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- (1) **Stable Unit Treatment Value Assumption (SUTVA)**: for $D_i(z)$ and $Y_i (z,d)$. This means that the potential outcomes for each unit $i$ are unrelated to the treatment status of other units $-i$. In substantive terms, there's no interference between units and there's no different versions of the treatment.
+  - \underline{Formal Expression}: $D_i(z) = D_i'(z) \Rightarrow Y_{(D_0,D_1,z)i} = Y_{(D_0',D_1',z)i}$ (i.e., stratified on $Z_i$).
+  - \underline{Specific Interpretation}: in this context, SUTVA means two things.
+    - First, once we've conditioned on country $i$'s mortality in the 17th, 18th, and 19th centuries ($Z_i$), then country $i$'s modern log GDP per capita ($Y_i$) should be unrelated to the strength of other countries' property rights institutions ($D_i$).
+    - Second, after conditioning on mortality in the 17th, 18th, and 19th centuries ($Z_i$) for all countries, treatment with each type of modern property rights institutions ($D_i$) should have roughly the same effect on every country.
+  - \underline{Assumption Plausibility}: It isn't clear to me that the SUTVA assumption is satisfied in this context. Settler mortality isn't the only factor that might explain differences in the effect of the treatment (property rights institutions) on a country's economic outcomes. Geographic trade openness (via factors like accessible rivers, ocean access, and proximity to wealthy trading partners) likely plays a significant role in how a country's property protections impact their economic success. Countries with greater geographic trade openness likely experience greater economic benefits from strong property rights institutions than countries with weaker geographic trade openness (who likely struggle to increase trade and investment regardless of the strength of their property rights institutions).
+- (2) **Randomization of Encouragement**.
+  - \underline{Formal Expression}: $\{\forall y_i \in Y_i, D_{i0}, D_{i1} \} \perp \!\!\! \perp Z_i$.
+  - \underline{Specific Interpretation}: In this context, randomization of the encouragement means that values of the instrumental variable (high/low settler mortality) is randomly distributed across countries---or, more plausibly, that settler mortality was distributed exogenously (i.e., not under the colonizing countries' control).
+  - \underline{Assumption Plausibility}: This assumption seems more likely to be plausible. Before the advent of proto-modern medicine, exogenous geographic factors were likely the dominant determinants of settler mortality rates.
+- (3) **Exclusion Restriction**: The instrument $Z_i$ affects the outcome $Y_i$ only through the treatment $D_i$.
+  - \underline{Formal Expression}: $\forall d \in \{0,1\}: Y_{i1}(d) = Y_{i0}(d)$.
+  - \underline{Specific Interpretation}: In this context, the exclusion restriction entails that settler mortality only affects modern-day GDP per capita via its effect on property rights.
+  - \underline{Assumption Plausibility}: I'm not confident that the exclusion restriction is satisfied in this case. It's plausible that high settler mortality affects present-day GDP per capita through socio-cultural pathways. For example, settler mortality is likely to be higher in hot, humid climates. It's also going to be more painstakingly difficult and dangerous to carry out any outdoor manual labor in such conditions, and thus manual laborers in these countries are likely to be less productive than those in temperate climates. This added friction on economic growth over centuries will have an impact on modern GDP per capita that doesn't happen because of property rights protections.
+- (4) **Monotonicity**: There are no defiers.
+  - \underline{Formal Expression}: $\forall i: D_{i1} \geq D_{i0}$
+  - \underline{Specific Interpretation}: In this case, we assume that there are no countries in which high settler mortality produced strong property rights and no countries where low settler mortality produced weak property rights.
+  - \underline{Assumption Plausibility}: This seems implausible if high-mortality countries had prior histories of strong property rights institutions before European colonization. In these cases, the pre-existing (native) property rights institutions may still have an effect in the modern day such that traditional norms/institutions lead to strong property rights in a region where European settlers faced a high mortality rate. This country would constitute a defier.
+- (5) **Relevance**: there's nonzero average encouragement effect (i.e., the encouragement actually works).
+  - \underline{Formal Expression}: $\mathbb{E}\left[D_i(1)-D_i(0)\right] \neq 0$
+  - \underline{Specific Interpretation}: This means that the instrumental variable must have a strong effect on the treatment variable. In other words, low settler mortality lead to stronger property rights institutions (via colonization) and high settler mortality led to weaker property rights institutions.
+  - \underline{Assumption Plausibility}: This seems to be implausible given some of the scenarios I outlined above that would violate other assumptions. For example, what if there are high-mortality countries that had prior histories of strong property rights institutions before European colonization? Again, in this case, we would not expect settler mortality to strongly predict property right institutions.
 
 
 \newpage
@@ -684,12 +1032,12 @@ $$
 
 ### 8.2.a. Write down and explain the identification assumption required for the type of RDD you implemented in Problem 1.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- Given $d \in \{0, 1\} \cap x,c \in X_i: \mathbb{E}[Y_i (d) | X_i = x]$ remains continuous as $x \rightarrow c$ from both sides of $X_i = c$. i.e., unit $i$'s characteristics do not abruptly change at the cutoff point $c$ such that units that fall below the cutoff in reality would have the same treatment effect as those that fall above the outcome in the alternative world where they actually fall above the cutoff. In this context, that would mean that winning the election (i.e., $>50\%$) would have the same effect on those candidates that barely lost the last election(i.e., that just barely fall below the threshold) are not different from incumbents that just barely fall above the threshold by winning the last election. It's the continuity of average potential outcomes assumption.
 
 
 ### 8.2.b. Contrast this assumption with the assumptions required for identification under selection on observables. Why do we require this new assumption?
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- To do selection on observables, we assume that the treatment is as-if random after stratifying on the control variables. If we think about like a DAG, then the control variables close all the theoretically problematic back door paths between the treatment and outcome variables so that the observed relationship corresponds to the actual effect of X on Y. Controlling for these control variables makes the treatment status "as-if" random. We also assume for selection on observables that there's common support. These two selection on observables assumptions are used when treatment is not random. However, the "continuity of average potential outcomes" assumption assumes that the treatment is "as-if" random if its close enough to the cutoff point and there's no difference in the treated vs. untreated characteristics around the cutoff point. We require it to ensure there's no sorting (i.e., units just below the cutoff can self-select into being just above the cutoff).
 
 
 \newpage
@@ -720,17 +1068,49 @@ Pennsylvania & $\gamma$ & $\delta$
 
 **Table 1: Average population FTE employment by state and time**
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- First, calculate state-level first difference:
+  - New Jersey first difference $D_{NJ} = \beta - \alpha$
+  - Pennsylvania first difference: $D_{PE} = \delta - \gamma$
+- Second, calculate difference in differences: 
+
+$$
+\begin{aligned}
+  \text{DiD} &= D_{NJ} - D_{PE} \\
+  &= \beta - \alpha - (\delta - \gamma) \\
+  &= \beta + \gamma - \alpha - \delta
+\end{aligned}
+$$
+
+- This difference-in-differences estimator is the difference in November and February's total teenage employment in New Jersey minus the difference in November and February's total teenage employment in Pennsylvania. New Jersey comes first because it receives the treatment (a minimum wage increase) while Pennsylvania is the control group as it did not experience a minimum wage increase.
 
 
 ### 9.1.b. Consider potential mean FTE employment among treated and untreated restaurants, pre-treatment and post-treatment. Denote treatment group membership with $D_i$ for $d=\{0,1\}$, index treatment status with $z=\{0,1\}$ and index the period with $t=\{0,1\}$. (For a unit in the treatment group, $D_i=1$ in all periods and $z=D_i$ post-treatment.) Replace each element of Table 1 using expected potential outcomes $Y_{i t}(z)$ conditional on $D_i=d$. Then, define the differences-in-differences estimator and the causal quantity of interest, the ATT, in these same terms. What assumption is necessary to identify the ATT using the differences-in-differences estimator?
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- First, replace each element of table 1 using the expected potential outcomes conditional on treatment assignment:
+  - $\alpha = \mathbb{E}\left[Y_{i0}(0) | D_i = 1 \right]$
+  - $\beta = \mathbb{E}\left[Y_{i1}(1) | D_i = 1 \right]$
+  - $\gamma = \mathbb{E}\left[Y_{i0}(0) | D_i = 0 \right]$
+  - $\delta = \mathbb{E}\left[Y_{i1}(0) | D_i = 0 \right]$
+- Second, calculate the difference in differences estimator for the causal quantity of interest:
 
+$$
+\begin{aligned}
+  \text{DiD} &= \beta + \gamma - \alpha - \delta \\
+  &= \mathbb{E}\left[Y_{i1}(1) | D_i = 1 \right] + \mathbb{E}\left[Y_{i0}(0) | D_i = 0 \right] - \mathbb{E}\left[Y_{i0}(0) | D_i = 1 \right] - \mathbb{E}\left[Y_{i1}(0) | D_i = 0 \right] \\
+  &= \tau_{ATT}
+\end{aligned} 
+$$
 
-### 9.1.c. Can you find any evidence for the plausibility of your key identifying assumption in the data? Briefly explain.
+- The **Parallel Trends Assumption** is the necessary assumption to identify the ATT using the difference-in-differences estimator.
+  - This can be formally represented as:
 
-[**\textcolor{red}{NOT ANSWERED}**]
+$$
+\begin{aligned}
+  \mathbb{E}\left[Y_{i 1}(0)-Y_{i 0}(0) \mid D_i=1\right] &= \mathbb{E}\left[Y_{i 1}(0)-Y_{i 0}(0) \mid D_i=0\right] \\
+\end{aligned}
+$$
+
+- In substantive terms, this is saying that New Jersey would've continued on the same trend in the counterfactual scenario where the minimum wage increase didn't happen.
 
 
 ---
@@ -751,10 +1131,32 @@ $$
 
 ### 9.2.a. Given the setup outlined above, create a three-by-three table (as in Slide 17 in the DID slides) that shows the meaning of each of $\alpha, \beta, \delta, \gamma$ and $\theta$. Which parameter gives the difference-in-differences, the causal quantity of interest in Malesky et al's study? Explain in your own words what each "difference" represents in the differencein-differences.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+\begin{center}
+\begin{tabular}{cccc}
+\hline & After $\left(T_i=1\right)$ & Before $\left(T_i=0\right)$ & After - Before \\
+\hline Treated $G_i=1$ & $\hat{\alpha}+\hat{\beta}+\hat{\gamma}+\hat{\theta} + \hat{\delta}$ & $\hat{\alpha}+\hat{\beta}+ \hat{\delta}$ & $\hat{\gamma}+\hat{\theta}$ \\
+Control $G_i=0$ & $\hat{\alpha}+\hat{\gamma} + \hat{\delta}$ & $\hat{\alpha} + \hat{\delta}$ & $\hat{\gamma}$ \\
+Treated - Control & $\hat{\beta}+\hat{\theta}$ & $\hat{\beta}$ & $\hat{\theta}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+- As in slide 17, the parameter $\hat{\theta}$ provides the causal quantity of interest. 
+- Let's consider each difference in turn.
+  - $\hat{\gamma} + \hat{\theta}$: results of subtracting the pre-treatment from post-treatment values of the treatment group
+  - $\hat{\gamma}$: result of subtracting the pre-treatment from post-treatment values of the control group.
+  - $\hat{\beta} + \hat{\theta}$: the results of subtracting the post-treatment outcomes of the treatment group from the control group.
+  - $\hat{\beta}$: the results of subtracting the pre-treatment outcomes of the control group from the treated group.
 
 
 ### 9.2.c. Given SUTVA, write down the key assumption required to identify the causal effect of recentralization. Interpret the assumption. Give an example, in the context of Malesky et al’s study, of a confounder that would violate this assumption.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- It's the **parallel trends assumption**, which can be formally represented as:
+
+$$
+\mathbb{E}\left[Y_{i 1}(0)-Y_{i 0}(0) \mid D_i=1\right] = \mathbb{E}\left[Y_{i 1}(0)-Y_{i 0}(0) \mid D_i=0\right]
+$$
+
+- This means that the trend/value for the treatment group would remain unchanged in the counterfactual world where they didn't receive treatment. One confounding factor that would violate the parallel trends assumption is if the councilors in the cities that centralized were already more likely to improve these services/indices than councilors in uncentralized cities. This might be the case if cities that are rapidly growing are more likely to centralize AND also dramatically improve these services.
+
 
