@@ -240,47 +240,72 @@ $$
 
 ## 2.3. Ghana's 2016 Election.
 
+**You and some colleagues are conducting an intervention in Ghana's 2016 election. Your goal is to assess the effect of deploying a new biometric voting machine on the incidence of electoral fraud at polling stations. Though Ghana is made up of 275 constituencies, due to the political context you are only allowed to perform your experiment within one constituency. Unconcerned, you and your team randomly select eight polling stations in the constituency, and among the eight, randomly assign half to receive the new voting machines and the other to serve as a control group. $D_i$ gives the resulting treatment status for each polling station $i$, for $i \in\{1, \ldots, N\}$, where $D_i \in\{0,1\}$ and $N=8$. The outcome of interest is the percentage of votes in a polling station attributable to fraud, $Y_i$.**
+
 ### 2.3.a. Assume that both parts of SUTVA hold. Calculate, explaining your answer:
 
 #### 2.3.a.i. For each polling station $i$, the number of potential outcomes that can be defined.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- There are only two potential outcomes we can define:
+  - $Y_i(1)$: the value of $Y$ for unit $i$ under treatment.
+  - $Y_i(0)$: the value of $Y$ for unit $i$ under control (i.e., no treatment).
 
 
 #### 2.3.a.ii. For each polling station $i$, the number of unit treatment effects that can be defined.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- For each polling station $i$, the **Average Treatment Effect (ATE)** is the only definable unit treatment effect:
+
+$$
+\tau = Y_i(1) - Y_i(0)
+$$
 
 
 #### 2.3.a.iii. For the sample of polling stations, the number of (unconditional) average treatment effect estimands that can be defined.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- For the sample of polling stations, there is only **one** definable (unconditional) average treatment effect estimands:
+
+$$
+\begin{aligned}
+  \tau_{ATE} &= \mathbb{E}\left[Y_i(1) - Y_i(0) \right] \\
+  &= \frac{1}{8} \sum_{i=1}^{8} \left[Y_i(1) - Y_i(0) \right]
+\end{aligned}
+$$
+
+[**\textcolor{red}{Check Answer}**]
 
 
 ### 2.3.b. A Ghanaian political insider gets wind of your study, and gives you some information. She says that because all of the polling stations in your study are within one small constituency, there will be interference between units. She explains how "interference" might occur in this case: In Ghana, the political operatives in each polling station who are responsible for committing fraud will move elsewhere if their efforts are frustrated. Their range of movement is predetermined by the geographic influence of the party bosses. Local conditions are such that the operatives in each polling station can only move to one, and only one, other polling station, as shown in Figure 2 (2.3.b graph).
 
-
-
 ![2.3.b. Graph: Operatives may move to only one other polling station, as indicated by the arrows (for example, from the second to third polling station, but not the reverse).](probset2_image_2.png)
-
-
-
 
 **Given this structure, again answer questions (i) - (iii).**
 
 #### 2.3.b.i. For each polling station $i$, the number of potential outcomes that can be defined.
 
-[**\textcolor{red}{NOT ANSWERED}**]
-
+- Because we now account for the treatment administered in the original experiment and also for the potential "intervention" of operatives, the number of potential outcomes has increased. Let unit $i-1$ denote the previous polling station. 
+- For each polling station $i$, there are now **four** potential outcomes that can be defined:
+  - $\{Y_i(1), Y_{i-1}(1) \}$.
+  - $\{Y_i(0), Y_{i-1}(1) \}$.
+  - $\{Y_i(1), Y_{i-1}(0) \}$.
+  - $\{Y_i(0), Y_{i-1}(0) \}$.
 
 #### 2.3.b.ii. For each polling station $i$, the number of unit treatment effects that can be defined.
 
-[**\textcolor{red}{NOT ANSWERED}**]
-
+- For each polling station $i$, there are now **six** definable unit treatment effects:
+  - $\tau_{i1} = Y_i(1,1) - Y_i(0,0)$.
+  - $\tau_{i2} = Y_i(1,1) - Y_i(1,0)$.
+  - $\tau_{i3} = Y_i(1,1) - Y_i(0,1)$.
+  - $\tau_{i4} = Y_i(1,0) - Y_i(0,0)$.
+  - $\tau_{i5} = Y_i(1,0) - Y_i(0,1)$.
+  - $\tau_{i6} = Y_i(0,1) - Y_i(0,0)$.
 
 #### 2.3.b.iii. For the sample of polling stations, the number of (unconditional) average treatment effect estimands that can be defined.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- For the sample of polling stations, there is still only **one** definable (unconditional) average treatment effect (ATE) estimand, where $\tau_{ij}$ is each of the 6 unit treatment effects defined above:
+  
+$$
+\tau_{ATE} = \frac{1}{8} \sum^8_{i=1} \left( \frac{1}{6} \sum^6_{j=1} \tau_{ij} \right)
+$$
 
 
 ### 2.3.c. Your funder is keen to spend their budget, and demands that you field the intervention as described originally: $N=8$, and for $D_i=\{0,1\}, \sum_{i=1}^N D_i=4$. You set aside your concerns, and observe the data in Table 1 on the percentage of votes in each polling station attributable to fraud.
