@@ -464,7 +464,7 @@ $$
 
 ### 3.3.a. What is the average treatment effect parameter? Write it using the above notation and also explain what it is in words.
 
-- The average treatment effect parameter is the difference in the respective population means, which are themselves estimated by the difference in sample means [**\textcolor{red}{Check Answer}**]:
+- The average treatment effect parameter is the difference in the respective population means, which are themselves estimated by the difference in sample means [**\textcolor{orange}{Check Answer}**]:
 
 $$
 \begin{aligned}
@@ -516,7 +516,14 @@ $$
 
 ### 5.1.a. Write an expression that gives the Euclidean distance between observations $i$ and $j$ in terms of their covariates $x_i$ and $x_j$, respectively.
 
-[**\textcolor{red}{NOT ANSWERED}**]
+- Let's first consider smaller-dimensional spaces before developing an expression for n-dimensions:
+  - For $P=1$, the Euclidean distance is: $d\left(x_i, x_j\right)=\sqrt{\left(x_i-x_j\right)^2}=\sqrt{\left(x_{i 1}-x_{j 1}\right)^2}$.
+  - For $P=2$, the Euclidean distance is: $d\left(x_i, x_j\right)=\sqrt{\left(x_i-x_j\right)^2}=\sqrt{\left(x_{i 1}-x_{j 1}\right)^2+\left(x_{i 2}-x_{j 2}\right)^2}$.
+- Then the expression of the Euclidean distance for any value of $P$ is:
+
+$$
+d\left(x_i, x_j\right)=\sqrt{\sum_{k=1}^P\left(x_{i k}-x_{j k}\right)^2}
+$$
 
 
 \newpage
