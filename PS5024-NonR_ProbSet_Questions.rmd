@@ -976,11 +976,32 @@ X_{k} \\
 & = \left(\mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \mathbf{Z}^{\top} \mathbf{Z} \left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top} Y \\
 & = \left(\mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \mathbf{I}_n \mathbf{Z}^{\top} Y \\
 & = \left(\mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \mathbf{Z}^{\top} Y \\
-& =\hat{\beta}_{\text {IV }} \quad (\text{As desired})
+& = \hat{\beta}_{\text {IV }} \quad (\text{As desired})
 \end{aligned}
 $$
 
 
+Here's my suggestion for the alternative proof:
+
+Let's make the following assumptions:
+
+- $\hat{\mathbf{X}} = \mathbf{P}\mathbf{X}$ where $\mathbf{P} = \mathbf{Z} (\mathbf{Z}^\top \mathbf{Z})^{-1} \mathbf{Z}^\top$
+- $\mathbf{P}$ is idempotent and symmetric such that $\mathbf{P}\mathbf{P}^\top = \mathbf{P}$ and $\mathbf{P} = \mathbf{P}^\top$
+
+Then the proof goes as follows:
+
+$$
+\begin{aligned}
+  \hat{\beta}_{2SLS} & = \left(\hat{\mathbf{X}}^{\top} \hat{\mathbf{X}}\right)^{-1} \hat{\mathbf{X}}^{\top} Y \\
+  & = ((\mathbf{P}\mathbf{X})^\top \mathbf{P} \mathbf{X})^{-1} (\mathbf{P}\mathbf{X})^\top Y \\
+  & = (\mathbf{X}^\top \mathbf{P} \mathbf{P} \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{P} Y \\
+  & = (\mathbf{X}^\top \mathbf{P} \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{P} Y \\
+  & = \left\{ \mathbf{X}^{\top}\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}\mathbf{X}\right\}^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\ 
+  & = \left( \mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \left(\mathbf{Z}^{\top} \mathbf{Z}\right) \left(\mathbf{X}^{\top}\mathbf{Z} \right)^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\
+  & = \left( \mathbf{Z}^{\top}\mathbf{X}\right)^{-1}\mathbf{Z}^{\top}  Y \\
+  & = \hat{\beta}_{\text{IV}}
+\end{aligned}
+$$
 
 ---
 
