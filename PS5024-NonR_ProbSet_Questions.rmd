@@ -8,6 +8,22 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Essential Definitions, Explanations, Formulas, Identities.
+
+## Essential Definitions/Explanations
+
+
+
+## Essential Formulas.
+
+- **Covariance**: $\operatorname{cov}(Z,Y) = \mathbb{E}[ZY] - \mathbb{E}[Z] \cdot \mathbb{E}[Y]$.
+
+
+
+
+
+
+\newpage
 
 # Problem Set 1.
 
