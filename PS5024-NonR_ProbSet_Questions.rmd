@@ -86,7 +86,7 @@ $$
 ### 1.2.e. Contrast the meaning of $\mathbb{E}\left[Y_i(0)\right]$ with the meaning of $\mathbb{E}\left[Y_i \mid D_i=0\right]$.
 
 - $\mathbb{E}\left[Y_i(0)\right]$ is $Y_i$'s potential outcome when $Y_i$ doesn't receive treatment (i.e., under the control).
-- $\mathbb{E}\left[Y_i \mid D_i=0\right]$ is the expected value of \textit{both} potential outcome for $Y_i$ when unit $i$ does not receive treatment, conditional on unit $i$ not receiving treatment.
+- $\mathbb{E}\left[Y_i \mid D_i=0\right]$ is the expected value of \textit{both} potential outcome for $Y_i$, conditional on unit $i$ not receiving treatment.
 - \textbf{Difference}: the former quantity ($\mathbb{E}\left[Y_i(0)\right]$) includes only one potential outcome, while the latter quantity ($\mathbb{E}\left[Y_i \mid D_i=0\right]$) includes \textit{both} potential outcomes for $Y_i$ conditional on unit $i$ not receiving treatment. [\textcolor{red}{More elaboration??}]
 
 
