@@ -913,7 +913,29 @@ $$
 
 **Show formally that $\hat{\beta}_{2 S L S}=\left(\hat{\mathbf{X}}^{\prime} \hat{\mathbf{X}}\right)^{-1} \hat{\mathbf{X}}^{\prime} Y=\left(\mathbf{Z}^{\prime} \mathbf{X}\right)^{-1} \mathbf{Z}^{\prime} Y=\hat{\beta}_{I V}$. Comment on the steps along the way to reach your conclusion. If you need any additional assumptions, please state them.**
 
-- [\textcolor{red}{NEEDS CONSOLIDATION: we need to pare down to a shorter but still palatable proof}]
+- **Shorter Proof**: let's adopt the following preliminary assumptions/simplifications:
+  - Let's make the following assumptions:
+    - **P1**: $\hat{\mathbf{X}} = \mathbf{P}\mathbf{X}$ where $\mathbf{P} = \mathbf{Z} (\mathbf{Z}^\top \mathbf{Z})^{-1} \mathbf{Z}^\top$.
+    - **P2**: $\mathbf{P}$ is idempotent ($\mathbf{P}\mathbf{P} = \mathbf{P}$) and symmetric ($\mathbf{P} = \mathbf{P}^\top$).
+  - Then the proof goes as follows:
+
+$$
+\begin{aligned}
+  \hat{\beta}_{2SLS} & = \left(\hat{\mathbf{X}}^{\top} \hat{\mathbf{X}}\right)^{-1} \hat{\mathbf{X}}^{\top} Y && (\text{Given}) \\
+  & = ((\mathbf{P}\mathbf{X})^\top \mathbf{P} \mathbf{X})^{-1} (\mathbf{P}\mathbf{X})^\top Y && (\text{By P1}) \\
+  & = (\mathbf{X}^\top \mathbf{P}^\top \mathbf{P} \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{P}^\top Y && (\text{Distribute transpose}) \\
+  & = (\mathbf{X}^\top \mathbf{P} \mathbf{P} \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{P} Y && (\text{By P2: symmetry}) \\
+  & = (\mathbf{X}^\top \mathbf{P} \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{P} Y && (\text{By P2: idempotency}) \\
+  & = \left\{ \mathbf{X}^{\top}\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}\mathbf{X}\right\}^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top} Y && (\text{By P1}) \\ 
+  & = \left( \mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \left[\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1}\right]^{-1} \left(\mathbf{X}^{\top}\mathbf{Z} \right)^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y && (\text{Distribute inverse}) \\
+  & = \left( \mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \left(\mathbf{Z}^{\top} \mathbf{Z}\right) \left(\mathbf{X}^{\top}\mathbf{Z} \right)^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y && (\text{Inverses cancel}) \\
+  & = \left( \mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \mathbf{Z}^{\top} \mathbf{Z} \left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y && (\mathbf{X}^{\top}\mathbf{Z} \text{ cancels with inverse}) \\
+  & = \left( \mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \mathbf{Z}^{\top}  Y && (\mathbf{Z}^{\top} \mathbf{Z} \text{ cancels with inverse}) \\
+  & = \hat{\beta}_{\text{IV}} && (\text{As desired})
+\end{aligned}
+$$
+
+- **Comprehensive Proof**:
 
 $$
 \begin{aligned}
@@ -977,29 +999,6 @@ X_{k} \\
 & = \left(\mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \mathbf{I}_n \mathbf{Z}^{\top} Y \\
 & = \left(\mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \mathbf{Z}^{\top} Y \\
 & = \hat{\beta}_{\text {IV }} \quad (\text{As desired})
-\end{aligned}
-$$
-
-
-Here's my suggestion for the alternative proof:
-
-Let's make the following assumptions:
-
-- $\hat{\mathbf{X}} = \mathbf{P}\mathbf{X}$ where $\mathbf{P} = \mathbf{Z} (\mathbf{Z}^\top \mathbf{Z})^{-1} \mathbf{Z}^\top$
-- $\mathbf{P}$ is idempotent and symmetric such that $\mathbf{P}\mathbf{P}^\top = \mathbf{P}$ and $\mathbf{P} = \mathbf{P}^\top$
-
-Then the proof goes as follows:
-
-$$
-\begin{aligned}
-  \hat{\beta}_{2SLS} & = \left(\hat{\mathbf{X}}^{\top} \hat{\mathbf{X}}\right)^{-1} \hat{\mathbf{X}}^{\top} Y \\
-  & = ((\mathbf{P}\mathbf{X})^\top \mathbf{P} \mathbf{X})^{-1} (\mathbf{P}\mathbf{X})^\top Y \\
-  & = (\mathbf{X}^\top \mathbf{P} \mathbf{P} \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{P} Y \\
-  & = (\mathbf{X}^\top \mathbf{P} \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{P} Y \\
-  & = \left\{ \mathbf{X}^{\top}\mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}\mathbf{X}\right\}^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\ 
-  & = \left( \mathbf{Z}^{\top}\mathbf{X}\right)^{-1} \left(\mathbf{Z}^{\top} \mathbf{Z}\right) \left(\mathbf{X}^{\top}\mathbf{Z} \right)^{-1} \mathbf{X}^{\top} \mathbf{Z}\left(\mathbf{Z}^{\top} \mathbf{Z}\right)^{-1} \mathbf{Z}^{\top}  Y \\
-  & = \left( \mathbf{Z}^{\top}\mathbf{X}\right)^{-1}\mathbf{Z}^{\top}  Y \\
-  & = \hat{\beta}_{\text{IV}}
 \end{aligned}
 $$
 
