@@ -20,6 +20,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 - **Covariance**: $\operatorname{cov}(Z,Y) = \mathbb{E}[ZY] - \mathbb{E}[Z] \cdot \mathbb{E}[Y]$.
 - $\mathbb{V}(\hat{\beta})=\mathbb{E}\left[(\hat{\beta}-\beta)(\hat{\beta}-\beta)^{\top} \mid \mathbf{X}\right]$
+- $\mathbb{V}(\bar{X}-\bar{Y}) = \mathbb{V}(\bar{X})+\mathbb{V}(-\bar{Y})+2 \cdot \operatorname{cov}(\bar{X},-\bar{Y})=\mathbb{V}(\bar{X})+\mathbb{V}(\bar{Y})-2 \cdot \operatorname{cov}(\bar{X}, \bar{Y})$
+- $\tau = \mathbb{E}[Y_i(1) - Y_i(0)] = \operatorname{P}(D_i = 1) \cdot \operatorname{ATT} - \operatorname{P}(D_i = 0)\cdot \operatorname{ATU}$
 
 
 
