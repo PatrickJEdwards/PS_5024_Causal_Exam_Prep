@@ -14,6 +14,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 - **Stable Unit Treatment Valuue Assumption (SUTVA)**: (1) noninterference and (2) uniform/consistent treatment.
   - Formally: $Y_{\left(D_1, D_2, \ldots, D_N\right) i}=Y_{\left(D_1^{\prime}, D_2^{\prime}, \ldots, D_N^{\prime}\right) i} \quad \text { if } \quad D_i=D_i^{\prime}$
+- **Monotone Treatment Selection (MTS) Assumption**: units that receive treatment already have greater potential outcome values.
+  - Formal expression:
+    - $\mathbb{E}\left[Y_{0 i} \mid D_i=0\right] \leq \mathbb{E}\left[Y_{0 i} \mid D_i=1\right]$.
+    - $\mathbb{E}\left[Y_{1 i} \mid D_i=0\right] \leq \mathbb{E}\left[Y_{1 i} \mid D_i=1\right]$.
+- 3 conditions for consistent $\hat{\beta}_{IV}$:
+  - 1. **Exogeneity**: $\operatorname{Cov}\left[u_1, Z \right] = 0$
+    - The instrument $Z$ must be as good as random conditional on the other covariates. i.e., $Z$ must be uncorrelated with the error term $u_1$.
+  - 2. **Exclusion Restriction**: $\operatorname{Cov}\left[u_2, D \right] = 0$
+    - The instrument $Z$ must have no direct effect on $Y$, the outcome variable. Instead, $Z$ should only affect $Y$ via the treatment variable $D$.
+  - 3. **Relevance**: The instrument $Z$ must be significantly correlated with the treatment variable $D$. 
+    - i.e., $Z$ must have a (reasonably strong) effect on $D$.
+
 
 
 ## Essential Formulas.
@@ -21,10 +33,15 @@ knitr::opts_chunk$set(echo = TRUE)
 - **Covariance**: $\operatorname{cov}(Z,Y) = \mathbb{E}[ZY] - \mathbb{E}[Z] \cdot \mathbb{E}[Y]$.
 - $\mathbb{V}(\hat{\beta})=\mathbb{E}\left[(\hat{\beta}-\beta)(\hat{\beta}-\beta)^{\top} \mid \mathbf{X}\right]$
 - $\mathbb{V}(\bar{X}-\bar{Y}) = \mathbb{V}(\bar{X})+\mathbb{V}(-\bar{Y})+2 \cdot \operatorname{cov}(\bar{X},-\bar{Y})=\mathbb{V}(\bar{X})+\mathbb{V}(\bar{Y})-2 \cdot \operatorname{cov}(\bar{X}, \bar{Y})$
-- $\tau = \mathbb{E}[Y_i(1) - Y_i(0)] = \operatorname{P}(D_i = 1) \cdot \operatorname{ATT} - \operatorname{P}(D_i = 0)\cdot \operatorname{ATU}$
+- observational studies ATE parameter:
 
-
-
+$$
+\begin{aligned}
+  \tau &= \mathbb{E}[Y_{i1} - Y_{i0}] \\
+  &= \operatorname{P}(D_i = 1) \cdot \text{ATT} + \operatorname{P}(D_i = 0) \cdot \text{ATU} \\
+  &= \operatorname{P}(D_i = 1) \cdot \left\{ \mathbb{E}\left[Y_{i1} \mid D=1\right]- \mathbb{E}\left[Y_{i0} \mid D=1\right] \right\} + \operatorname{P}(D_i = 0) \cdot \left\{ \mathbb{E}\left[Y_{i1} \mid D=0\right] - \mathbb{E}\left[Y_{i0} \mid D=0\right] \right\}
+\end{aligned}
+$$
 
 
 \newpage
